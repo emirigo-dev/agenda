@@ -9,11 +9,13 @@ import presentacion.reportes.ReporteAgenda;
 import presentacion.vista.VentanaPersona;
 import presentacion.vista.Vista;
 import dto.PersonaDTO;
+import dto.TipoContactoDTO;
 
 public class Controlador implements ActionListener
 {
 		private Vista vista;
 		private List<PersonaDTO> personasEnTabla;
+		private List<TipoContactoDTO> tipos;
 		private VentanaPersona ventanaPersona; 
 		private Agenda agenda;
 		
@@ -66,6 +68,8 @@ public class Controlador implements ActionListener
 		private void refrescarTabla()
 		{
 			this.personasEnTabla = agenda.obtenerPersonas();
+			this.tipos = agenda.obtenerTipoContacto();
+			System.out.print(tipos);
 			this.vista.llenarTabla(this.personasEnTabla);
 		}
 
