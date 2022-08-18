@@ -2,20 +2,27 @@ package presentacion.controlador;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.HashMap;
 import java.util.List;
 
 import modelo.Agenda;
 import presentacion.reportes.ReporteAgenda;
 import presentacion.vista.VentanaPersona;
 import presentacion.vista.Vista;
+import dto.LocalidadDTO;
+import dto.PaisDTO;
 import dto.PersonaDTO;
+import dto.ProvinciaDTO;
 import dto.TipoContactoDTO;
 
 public class Controlador implements ActionListener
 {
 		private Vista vista;
 		private List<PersonaDTO> personasEnTabla;
-		private List<TipoContactoDTO> tipos;
+		private HashMap<Integer, TipoContactoDTO> tipoDeContactoById;
+		private HashMap<String, LocalidadDTO> localidadById;
+		private HashMap<String, ProvinciaDTO> provinciaById;
+		private HashMap<String, PaisDTO> paisById;
 		private VentanaPersona ventanaPersona; 
 		private Agenda agenda;
 		
@@ -68,8 +75,11 @@ public class Controlador implements ActionListener
 		private void refrescarTabla()
 		{
 			this.personasEnTabla = agenda.obtenerPersonas();
-			this.tipos = agenda.obtenerTipoContacto();
-			System.out.print(tipos);
+			this.tipoDeContactoById = agenda.obtenerTipoContacto();
+			this.localidadById = agenda.obtenerLocalidades();
+			this.provinciaById = agenda.obtenerProvincias();
+			this.paisById = agenda.obtenerPaises();
+			
 			this.vista.llenarTabla(this.personasEnTabla);
 		}
 

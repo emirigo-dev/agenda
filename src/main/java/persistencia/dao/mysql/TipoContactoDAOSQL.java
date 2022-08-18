@@ -3,8 +3,7 @@ package persistencia.dao.mysql;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
 
 import persistencia.conexion.Conexion;
 import persistencia.dao.interfaz.TipoContactoDAO;
@@ -13,11 +12,11 @@ import dto.TipoContactoDTO;
 public class TipoContactoDAOSQL implements TipoContactoDAO{
 	private static final String readall = "SELECT * FROM TIPO_CONTACTO";
 
-	public List<TipoContactoDTO> readAll() 
+	public HashMap<Integer, TipoContactoDTO> readAll() 
 	{
 		PreparedStatement statement;
-		ResultSet resultSet; //Guarda el resultado de la query
-		ArrayList<TipoContactoDTO> tiposContacto = new ArrayList<TipoContactoDTO>();
+		ResultSet resultSet;
+		HashMap<Integer, TipoContactoDTO> tiposContactoById = new HashMap<Integer, TipoContactoDTO>();
 		Conexion conexion = Conexion.getConexion();
 		try 
 		{
@@ -25,14 +24,15 @@ public class TipoContactoDAOSQL implements TipoContactoDAO{
 			resultSet = statement.executeQuery();
 			while(resultSet.next())
 			{
-				tiposContacto.add(getTipoContactoDTO(resultSet));
+				TipoContactoDTO tipoContacto = getTipoContactoDTO(resultSet);
+				tiposContactoById.put(tipoContacto.getIdTipoContacto(), tipoContacto);
 			}
 		} 
 		catch (SQLException e) 
 		{
 			e.printStackTrace();
 		}
-		return tiposContacto;
+		return tiposContactoById;
 	}
 		
 	private TipoContactoDTO getTipoContactoDTO(ResultSet resultSet) throws SQLException

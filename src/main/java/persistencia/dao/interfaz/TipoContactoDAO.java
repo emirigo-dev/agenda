@@ -1,9 +1,9 @@
 package persistencia.dao.interfaz;
-import java.util.List;
+import java.util.HashMap;
 import dto.TipoContactoDTO;
 
 public interface TipoContactoDAO 
 {
 	
-	public List<TipoContactoDTO> readAll();
+	public HashMap<Integer, TipoContactoDTO> readAll();
 }

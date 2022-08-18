@@ -24,6 +24,6 @@ public class TipoContactoDTO {
 	}
 
 	public void setTipo(String tipo) {
-		tipo = tipo;
+		this.tipo = tipo;
 	}
 }

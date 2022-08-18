@@ -102,6 +102,8 @@ public class PersonaDAOSQL implements PersonaDAO
 		persona.setAltura(resultSet.getString("altura"));
 		persona.setPiso(resultSet.getString("piso"));
 		persona.setEmail(resultSet.getString("email"));
+		persona.setIdLocalidad(resultSet.getString("idLocalidad"));
+		persona.setTipoContactoId(resultSet.getInt("idTipoContacto"));
 		
 		return persona; 
 	}

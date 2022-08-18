@@ -15,7 +15,7 @@ public class PersonaDTO
 	private Date cumpleanios;
 	private int tipoContactoId;
     private String tipoContacto;
-    private int idLocalidad;
+    private String idLocalidad;
     private String Localidad;
 
 	public PersonaDTO(int idPersona, String nombre, String telefono)
@@ -25,6 +25,22 @@ public class PersonaDTO
 		this.telefono = telefono;
 	}
 	
+	public int getTipoContactoId() {
+		return tipoContactoId;
+	}
+
+	public void setTipoContactoId(int tipoContactoId) {
+		this.tipoContactoId = tipoContactoId;
+	}
+
+	public String getIdLocalidad() {
+		return idLocalidad;
+	}
+
+	public void setIdLocalidad(String idLocalidad) {
+		this.idLocalidad = idLocalidad;
+	}
+
 	public int getIdPersona() 
 	{
 		return this.idPersona;
