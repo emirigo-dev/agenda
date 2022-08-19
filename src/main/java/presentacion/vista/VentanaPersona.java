@@ -1,6 +1,7 @@
 package presentacion.vista;
 
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -51,6 +52,11 @@ public class VentanaPersona extends JFrame
 		lblTelfono.setBounds(10, 52, 113, 14);
 		panel.add(lblTelfono);
 		
+		String[] petStrings = { "Bird", "Cat", "Dog", "Rabbit", "Pig" };
+		JLabel lblTipoContacto = new JLabel("Tipo de contacto");
+		lblTipoContacto.setBounds(10,92,113,14);
+		panel.add(lblTipoContacto);
+		
 		txtNombre = new JTextField();
 		txtNombre.setBounds(133, 8, 164, 20);
 		panel.add(txtNombre);
@@ -60,6 +66,10 @@ public class VentanaPersona extends JFrame
 		txtTelefono.setBounds(133, 49, 164, 20);
 		panel.add(txtTelefono);
 		txtTelefono.setColumns(10);
+		
+		JComboBox tipoContactoComboBox = new JComboBox(petStrings);
+		tipoContactoComboBox.setBounds(133, 92, 113, 14);
+		panel.add(tipoContactoComboBox);
 		
 		btnAgregarPersona = new JButton("Agregar");
 		btnAgregarPersona.setBounds(208, 92, 89, 23);
