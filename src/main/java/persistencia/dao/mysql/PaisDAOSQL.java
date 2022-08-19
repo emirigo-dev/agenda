@@ -24,7 +24,7 @@ public class PaisDAOSQL implements PaisDAO{
 			resultSet = statement.executeQuery();
 			while(resultSet.next())
 			{
-				PaisDTO pais = getProvinciaDTO(resultSet);
+				PaisDTO pais = getPaisDTO(resultSet);
 				paisById.put(pais.getIdPais(), pais);
 			}
 		} 
@@ -35,10 +35,10 @@ public class PaisDAOSQL implements PaisDAO{
 		return paisById;
 	}
 		
-	private PaisDTO getProvinciaDTO(ResultSet resultSet) throws SQLException
+	private PaisDTO getPaisDTO(ResultSet resultSet) throws SQLException
 	{
 		String idPais = resultSet.getString("idPais");
-		String paisName = resultSet.getString("provincia");
+		String paisName = resultSet.getString("pais");
 		PaisDTO pais = new PaisDTO(idPais, paisName);
 		
 		return pais; 
