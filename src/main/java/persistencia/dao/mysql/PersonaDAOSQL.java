@@ -13,12 +13,12 @@ import dto.PersonaDTO;
 
 public class PersonaDAOSQL implements PersonaDAO
 {
-	private static final String insert = "INSERT INTO personas(idPersona, nombre, telefono) VALUES(?, ?, ?)";
+	private static final String insert = "INSERT INTO personas(idPersona, nombre, telefono, idTipoContacto) VALUES(?, ?, ?, ?)";
 	private static final String delete = "DELETE FROM personas WHERE idPersona = ?";
-	private static final String readall = "SELECT * FROM personas";
-		
+	private static final String readall = "SELECT * FROM Personas p INNER JOIN TIPO_CONTACTO t ON p.idTipoContacto = t.idTipoContacto ORDER BY Nombre";
 	public boolean insert(PersonaDTO persona)
 	{
+
 		PreparedStatement statement;
 		Connection conexion = Conexion.getConexion().getSQLConexion();
 		boolean isInsertExitoso = false;
@@ -28,6 +28,8 @@ public class PersonaDAOSQL implements PersonaDAO
 			statement.setInt(1, persona.getIdPersona());
 			statement.setString(2, persona.getNombre());
 			statement.setString(3, persona.getTelefono());
+			statement.setInt(4, persona.getTipoContactoId());
+
 			if(statement.executeUpdate() > 0)
 			{
 				conexion.commit();
@@ -102,8 +104,11 @@ public class PersonaDAOSQL implements PersonaDAO
 		persona.setAltura(resultSet.getString("altura"));
 		persona.setPiso(resultSet.getString("piso"));
 		persona.setEmail(resultSet.getString("email"));
-		persona.setIdLocalidad(resultSet.getString("idLocalidad"));
+//		persona.setIdLocalidad(resultSet.getString("idLocalidad"));
 		persona.setTipoContactoId(resultSet.getInt("idTipoContacto"));
+		persona.setCumpleanios(resultSet.getDate("cumpleaños"));
+		persona.setTipoContacto(resultSet.getString("Tipo"));
+//		persona.setLocalidad(resultSet.getString("localidad"));
 		
 		return persona; 
 	}

@@ -19,7 +19,7 @@ public class Controlador implements ActionListener
 {
 		private Vista vista;
 		private List<PersonaDTO> personasEnTabla;
-		private HashMap<Integer, TipoContactoDTO> tipoDeContactoById;
+		private HashMap<String, TipoContactoDTO> tipoDeContactoByName;
 		private HashMap<String, LocalidadDTO> localidadById;
 		private HashMap<String, ProvinciaDTO> provinciaById;
 		private HashMap<String, PaisDTO> paisById;
@@ -32,9 +32,9 @@ public class Controlador implements ActionListener
 			this.vista.getBtnAgregar().addActionListener(a->ventanaAgregarPersona(a));
 			this.vista.getBtnBorrar().addActionListener(s->borrarPersona(s));
 			this.vista.getBtnReporte().addActionListener(r->mostrarReporte(r));
-			this.ventanaPersona = VentanaPersona.getInstance();
-			this.ventanaPersona.getBtnAgregarPersona().addActionListener(p->guardarPersona(p));
 			this.agenda = agenda;
+			this.ventanaPersona = VentanaPersona.getInstance(this.agenda.obtenerTipoContacto());		
+			this.ventanaPersona.getBtnAgregarPersona().addActionListener(p->guardarPersona(p));
 		}
 		
 		private void ventanaAgregarPersona(ActionEvent a) {
@@ -44,10 +44,13 @@ public class Controlador implements ActionListener
 		private void guardarPersona(ActionEvent p) {
 			String nombre = this.ventanaPersona.getTxtNombre().getText();
 			String tel = ventanaPersona.getTxtTelefono().getText();
+			String tipoContacto = this.ventanaPersona.getContactTypeName();
 			PersonaDTO nuevaPersona = new PersonaDTO(0, nombre, tel);
+			nuevaPersona.setTipoContactoId(tipoDeContactoByName.get(tipoContacto).getIdTipoContacto());
 			this.agenda.agregarPersona(nuevaPersona);
 			this.refrescarTabla();
 			this.ventanaPersona.cerrar();
+			
 		}
 
 		private void mostrarReporte(ActionEvent r) {
@@ -75,13 +78,23 @@ public class Controlador implements ActionListener
 		private void refrescarTabla()
 		{
 			this.personasEnTabla = agenda.obtenerPersonas();
-			this.tipoDeContactoById = agenda.obtenerTipoContacto();
+			this.tipoDeContactoByName = agenda.obtenerTipoContacto();
 			this.localidadById = agenda.obtenerLocalidades();
 			this.provinciaById = agenda.obtenerProvincias();
 			this.paisById = agenda.obtenerPaises();
+			this.ventanaPersona.llenarTipoContacto(this.tipoDeContactoByName);
+		
 			
 			this.vista.llenarTabla(this.personasEnTabla);
 		}
+		
+//		public static HashMap<Integer, TipoContactoDTO> hola(){
+//			return;
+//		}
+//		this.tipoDeContactoById = agenda.obtenerTipoContacto();
+//		this.localidadById = agenda.obtenerLocalidades();
+//		this.provinciaById = agenda.obtenerProvincias();
+//		this.paisById = agenda.obtenerPaises();
 
 		@Override
 		public void actionPerformed(ActionEvent e) { }

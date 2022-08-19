@@ -18,6 +18,22 @@ public class PersonaDTO
     private String idLocalidad;
     private String Localidad;
 
+	public String getTipoContacto() {
+		return tipoContacto;
+	}
+
+	public void setTipoContacto(String tipoContacto) {
+		this.tipoContacto = tipoContacto;
+	}
+
+	public String getLocalidad() {
+		return Localidad;
+	}
+
+	public void setLocalidad(String localidad) {
+		Localidad = localidad;
+	}
+
 	public PersonaDTO(int idPersona, String nombre, String telefono)
 	{
 		this.idPersona = idPersona;

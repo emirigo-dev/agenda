@@ -1,4 +1,8 @@
 package presentacion.vista;
+ 
+
+import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -8,6 +12,8 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
+import dto.TipoContactoDTO;
+
 public class VentanaPersona extends JFrame 
 {
 	private static final long serialVersionUID = 1L;
@@ -15,22 +21,27 @@ public class VentanaPersona extends JFrame
 	private JTextField txtNombre;
 	private JTextField txtTelefono;
 	private JButton btnAgregarPersona;
+	private JComboBox tipoContactoComboBox;
 	private static VentanaPersona INSTANCE;
+	private HashMap<String, TipoContactoDTO> tipoContactoByName;
+
 	
-	public static VentanaPersona getInstance()
+	public static VentanaPersona getInstance(HashMap<String, TipoContactoDTO> tipoContactoByName)
 	{
 		if(INSTANCE == null)
 		{
-			INSTANCE = new VentanaPersona(); 	
-			return new VentanaPersona();
+			INSTANCE = new VentanaPersona(tipoContactoByName); 	
+			return new VentanaPersona(tipoContactoByName);
 		}
 		else
 			return INSTANCE;
 	}
 
-	private VentanaPersona() 
+	private VentanaPersona(HashMap<String, TipoContactoDTO> tipoContactoByName) 
 	{
 		super();
+		
+		this.tipoContactoByName = tipoContactoByName;
 		
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 343, 183);
@@ -52,7 +63,7 @@ public class VentanaPersona extends JFrame
 		lblTelfono.setBounds(10, 52, 113, 14);
 		panel.add(lblTelfono);
 		
-		String[] petStrings = { "Bird", "Cat", "Dog", "Rabbit", "Pig" };
+		String[] tipoContacto = this.tipoContactoByName.keySet().toArray(new String[this.tipoContactoByName.keySet().size()]);
 		JLabel lblTipoContacto = new JLabel("Tipo de contacto");
 		lblTipoContacto.setBounds(10,92,113,14);
 		panel.add(lblTipoContacto);
@@ -67,7 +78,7 @@ public class VentanaPersona extends JFrame
 		panel.add(txtTelefono);
 		txtTelefono.setColumns(10);
 		
-		JComboBox tipoContactoComboBox = new JComboBox(petStrings);
+		this.tipoContactoComboBox  = new JComboBox(tipoContacto);
 		tipoContactoComboBox.setBounds(133, 92, 113, 14);
 		panel.add(tipoContactoComboBox);
 		
@@ -92,6 +103,11 @@ public class VentanaPersona extends JFrame
 	{
 		return txtTelefono;
 	}
+	
+	public String getContactTypeName() {
+		return tipoContactoComboBox.getSelectedItem().toString();
+
+	}
 
 	public JButton getBtnAgregarPersona() 
 	{
@@ -103,6 +119,10 @@ public class VentanaPersona extends JFrame
 		this.txtNombre.setText(null);
 		this.txtTelefono.setText(null);
 		this.dispose();
+	}
+	
+	public void llenarTipoContacto(HashMap<String, TipoContactoDTO> tipoContactoByName) {
+		this.tipoContactoByName = tipoContactoByName;
 	}
 	
 }

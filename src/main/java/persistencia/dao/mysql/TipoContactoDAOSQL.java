@@ -12,11 +12,11 @@ import dto.TipoContactoDTO;
 public class TipoContactoDAOSQL implements TipoContactoDAO{
 	private static final String readall = "SELECT * FROM TIPO_CONTACTO";
 
-	public HashMap<Integer, TipoContactoDTO> readAll() 
+	public HashMap<String, TipoContactoDTO> readAll() 
 	{
 		PreparedStatement statement;
 		ResultSet resultSet;
-		HashMap<Integer, TipoContactoDTO> tiposContactoById = new HashMap<Integer, TipoContactoDTO>();
+		HashMap<String, TipoContactoDTO> tiposContactoByName = new HashMap<String, TipoContactoDTO>();
 		Conexion conexion = Conexion.getConexion();
 		try 
 		{
@@ -25,14 +25,14 @@ public class TipoContactoDAOSQL implements TipoContactoDAO{
 			while(resultSet.next())
 			{
 				TipoContactoDTO tipoContacto = getTipoContactoDTO(resultSet);
-				tiposContactoById.put(tipoContacto.getIdTipoContacto(), tipoContacto);
+				tiposContactoByName.put(tipoContacto.getTipo(), tipoContacto);
 			}
 		} 
 		catch (SQLException e) 
 		{
 			e.printStackTrace();
 		}
-		return tiposContactoById;
+		return tiposContactoByName;
 	}
 		
 	private TipoContactoDTO getTipoContactoDTO(ResultSet resultSet) throws SQLException
@@ -40,9 +40,7 @@ public class TipoContactoDAOSQL implements TipoContactoDAO{
 		int id = resultSet.getInt("idTipoContacto");
 		String tipo = resultSet.getString("Tipo");
 		TipoContactoDTO tipoContacto = new TipoContactoDTO(id, tipo);
-		
-		System.out.println(tipoContacto.getTipo());
-		
+				
 		return tipoContacto; 
 	}
 

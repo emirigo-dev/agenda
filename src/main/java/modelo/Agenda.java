@@ -48,7 +48,7 @@ public class Agenda
 		return this.persona.readAll();		
 	}
 	
-	public HashMap<Integer, TipoContactoDTO> obtenerTipoContacto()
+	public HashMap<String, TipoContactoDTO> obtenerTipoContacto()
 	{
 		return this.tipoContacto.readAll();	
 	}
