@@ -25,10 +25,11 @@ public class Vista
 	private JFrame frame;
 	private JTable tablaPersonas;
 	private JButton btnAgregar;
+	private JButton btnEditar;
 	private JButton btnBorrar;
 	private JButton btnReporte;
 	private DefaultTableModel modelPersonas;
-	private  String[] nombreColumnas = {"Nombre y apellido","Telefono", "Calle", "Localidad", "Altura", "Piso", "Email", "Cumpleaños", "Tipo de contacto"};
+	private  String[] nombreColumnas = {"Nombre y apellido","Telefono", "Calle", "Localidad", "Provincia", "Pais", "Altura", "Piso", "dpto", "Email", "Cumpleaños", "Tipo de contacto"};
 
 	public Vista() 
 	{
@@ -67,7 +68,7 @@ public class Vista
 		btnAgregar.setBounds(10, 370, 89, 23);
 		panel.add(btnAgregar);
 		
-		JButton btnEditar = new JButton("Editar");
+		btnEditar = new JButton("Editar");
 		btnEditar.setBounds(109, 370, 89, 23);
 		panel.add(btnEditar);
 		
@@ -104,6 +105,11 @@ public class Vista
 	{
 		return btnAgregar;
 	}
+	
+	public JButton getBtnEditar() 
+	{
+		return btnEditar;
+	}
 
 	public JButton getBtnBorrar() 
 	{
@@ -132,6 +138,7 @@ public class Vista
 
 
 	public void llenarTabla(List<PersonaDTO> personasEnTabla) {
+		this.tablaPersonas.setDefaultEditor(Object.class, null);
 		this.getModelPersonas().setRowCount(0); //Para vaciar la tabla
 		this.getModelPersonas().setColumnCount(0);
 		this.getModelPersonas().setColumnIdentifiers(this.getNombreColumnas());
@@ -142,17 +149,23 @@ public class Vista
 			String tel = p.getTelefono();
 			String calle = p.getCalle();
 			String localidad = p.getLocalidad();
+			String provincia = p.getProvincia();
+			String pais = p.getPais();
 			String altura = p.getAltura();
 			String piso = p.getPiso();
+			String dpto = p.getDpto();
 			String email = p.getEmail();
 			String cumpleanios = p.getCumpleanios();
 			String tipoContacto = p.getTipoContacto();
-
 			
-			Object[] fila = {nombre, tel, calle, localidad, altura, piso, email, cumpleanios, tipoContacto};
+			Object[] fila = {nombre, tel, calle, localidad, provincia, pais, altura, piso, dpto, email, cumpleanios, tipoContacto};
 			this.getModelPersonas().addRow(fila);
 		}
 		
+	}
+	
+	public void showError() {
+		JOptionPane.showMessageDialog(this.frame, "Debe seleccionar una fila a modificar");
 	}
 	
 

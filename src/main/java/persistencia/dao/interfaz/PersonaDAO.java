@@ -8,6 +8,8 @@ public interface PersonaDAO
 {
 	
 	public boolean insert(PersonaDTO persona);
+	
+	public boolean edit(PersonaDTO persona);
 
 	public boolean delete(PersonaDTO persona_a_eliminar);
 	
