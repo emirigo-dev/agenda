@@ -13,7 +13,7 @@ import dto.PersonaDTO;
 
 public class PersonaDAOSQL implements PersonaDAO
 {
-	private static final String insert = "INSERT INTO personas(nombre, telefono, idTipoContacto, idLocalidad, Calle, altura, piso, email, cumpleanios) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)";
+	private static final String insert = "INSERT INTO personas(nombre, telefono, idTipoContacto, idLocalidad, Calle, altura, piso, dpto, email, cumpleanios) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 	private static final String edit = "UPDATE PERSONAS SET Nombre = ?, Telefono = ?, Calle = ?, altura = ?, piso = ?, dpto = ?, email = ?, cumpleanios = ?, idTipoContacto = ?, idLocalidad = ? WHERE idPersona = ?";
 	private static final String delete = "DELETE FROM personas WHERE idPersona = ?";
 	private static final String readall = "SELECT * FROM Personas p LEFT JOIN TIPO_CONTACTO t ON p.idTipoContacto = t.idTipoContacto LEFT JOIN LOCALIDAD l ON p.idLocalidad = l.idLocalidad LEFT JOIN PROVINCIA pr ON pr.idProvincia = l.idProvincia LEFT JOIN Pais pa ON pa.idPais = pr.idPais";
@@ -33,8 +33,9 @@ public class PersonaDAOSQL implements PersonaDAO
 			statement.setString(5, persona.getCalle());
 			statement.setString(6, persona.getAltura());
 			statement.setString(7, persona.getPiso());
-			statement.setString(8, persona.getEmail());
-			statement.setString(9, persona.getCumpleanios());
+			statement.setString(8, persona.getDpto());
+			statement.setString(9, persona.getEmail());
+			statement.setString(10, persona.getCumpleanios());
 			
 			if(statement.executeUpdate() > 0)
 			{

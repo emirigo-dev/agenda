@@ -62,7 +62,7 @@ public class VentanaPersona extends JFrame
 			return new VentanaPersona(tipoContactoByName);
 		}
 		else
-			return INSTANCE;
+			return new VentanaPersona(tipoContactoByName);
 	}
 	
 	public static VentanaPersona getInstance(HashMap<String, TipoContactoDTO> tipoContactoByName, PersonaDTO persona)
@@ -412,10 +412,17 @@ public class VentanaPersona extends JFrame
 		return btnEditarPersona;
 	}
 
-	public void cerrar()
-	{
+	public void cerrar() {
+		
 		this.txtNombre.setText(null);
 		this.txtTelefono.setText(null);
+		this.Email.setText(null);
+		this.calle.setText(null);
+		this.altura.setText(null);
+		this.piso.setText(null);
+		this.depto.setText(null);
+		this.fechNacimiento.setDate(null);
+		this.tipoContactoComboBox.setSelectedItem("Amigo");
 		this.dispose();
 	}
 	
