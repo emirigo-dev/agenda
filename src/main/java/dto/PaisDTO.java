@@ -26,4 +26,9 @@ public class PaisDTO {
 		this.pais = pais;
 	}
 	
+	@Override
+	public String toString() {
+		return "Pais [idPais=" + idPais   + ", pais=" + pais + "]";
+	}
+	
 }

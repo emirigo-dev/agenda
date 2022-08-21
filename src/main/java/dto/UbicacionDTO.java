@@ -12,112 +12,19 @@ import persistencia.conexion.Conexion;
 
 
 public class UbicacionDTO {
+		
+	private HashMap<String,List<LocalidadDTO>> localidadByIdProvincia = new HashMap<String, List<LocalidadDTO>>();
+	private HashMap<String,List<ProvinciaDTO>> provinciaByIdPais = new HashMap<String,List<ProvinciaDTO>>();
+	private HashMap <String, LocalidadDTO> localidadByName = new HashMap <String, LocalidadDTO>();
+	private HashMap <String, ProvinciaDTO> provinciaByName = new HashMap <String, ProvinciaDTO>();
+	private HashMap <String, PaisDTO> paisByName = new HashMap <String, PaisDTO>();
+	private List<PaisDTO> paises = new ArrayList<PaisDTO>();
 	
-	private static String readLocalidad = "SELECT * FROM LOCALIDAD";
-	private static String readProv = "SELECT * FROM PROVINCIA";
-	private static String readPais = "SELECT * FROM PAIS";
-	
-	private static HashMap<String,List<LocalidadDTO>> localidadByIdProvincia = new HashMap<String, List<LocalidadDTO>>();
-	private static HashMap<String,List<ProvinciaDTO>> provinciaByIdPais = new HashMap<String,List<ProvinciaDTO>>();
-	private static HashMap <String, LocalidadDTO> localidadByName = new HashMap <String, LocalidadDTO>();
-	private static HashMap <String, ProvinciaDTO> provinciaByName = new HashMap <String, ProvinciaDTO>();
-	private static HashMap <String, PaisDTO> paisByName = new HashMap <String, PaisDTO>();
-	private static List<PaisDTO> paises = new ArrayList<PaisDTO>();
-	private static UbicacionDTO instancia = null;
-	
-	private UbicacionDTO () {} 
-	
-	public static UbicacionDTO constructor() {
-		if( instancia == null) {
-			instancia = new UbicacionDTO();
-		}
-		readPaises();
-		readProvincias();
-		readLocalidades();
-		return instancia;
-	}
-	
-	
-	
-	private static void readPaises() {
-		paises.clear();
-		PreparedStatement statement;
-		ResultSet resultSet;
-		Conexion conexion = Conexion.getConexion();
-		try  {
-			statement = conexion.getSQLConexion().prepareStatement(readPais);
-			resultSet = statement.executeQuery();
-			while(resultSet.next()) {
-				paisByName.put(resultSet.getString("pais"), new PaisDTO(resultSet.getString("idPais"), resultSet.getString("pais")));
-				paises.add(new PaisDTO(resultSet.getString("idPais"), resultSet.getString("pais")));
-			}
-		} 
-		catch (SQLException e) {
-			e.printStackTrace();
-		}
-	}
-	
-	private static void readProvincias() {
-		provinciaByIdPais.values().clear();
-		PreparedStatement statement;
-		ResultSet resultSet;
-		Conexion conexion = Conexion.getConexion();
-		try  {
-			statement = conexion.getSQLConexion().prepareStatement(readProv);
-			resultSet = statement.executeQuery();
-			while(resultSet.next()) {				
-				if(provinciaByIdPais.containsKey(resultSet.getString("idPais"))) {
-					provinciaByIdPais.get(resultSet.getString("idPais")).add(new ProvinciaDTO(resultSet.getString("idPais"), resultSet.getString("idProvincia"), resultSet.getString("provincia")));
-				}else {
-					List<ProvinciaDTO> provincias = new ArrayList<ProvinciaDTO>();
-					provincias.add(new ProvinciaDTO(resultSet.getString("idPais"), resultSet.getString("idProvincia"), resultSet.getString("provincia")));
-					provinciaByIdPais.put(resultSet.getString("idPais"), provincias);
-				}
-				provinciaByName.put(resultSet.getString("provincia"), new ProvinciaDTO (resultSet.getString("idPais"), resultSet.getString("idProvincia"), resultSet.getString("provincia")));
-			}
-		} 
-		catch (SQLException e) {
-			e.printStackTrace();
-		}
-	}
-	
-	private static void readLocalidades() {
-		localidadByIdProvincia.values().clear();
-		PreparedStatement statement;
-		ResultSet resultSet;
-		Conexion conexion = Conexion.getConexion();
-		try  {
-			statement = conexion.getSQLConexion().prepareStatement(readLocalidad);
-			resultSet = statement.executeQuery();
-			while(resultSet.next()) {
-				if(localidadByIdProvincia.containsKey(resultSet.getString("idProvincia"))) {
-					localidadByIdProvincia.get(resultSet.getString("idProvincia")).add(new LocalidadDTO(resultSet.getString("idProvincia"), resultSet.getString("idLocalidad"), resultSet.getString("localidad")));
-				}else {
-					List<LocalidadDTO> localidades = new ArrayList<LocalidadDTO>();
-					localidades.add(new LocalidadDTO(resultSet.getString("idProvincia"), resultSet.getString("idLocalidad"), resultSet.getString("localidad")));
-					localidadByIdProvincia.put(resultSet.getString("idProvincia"), localidades);
-				}
-				localidadByName.put(resultSet.getString("localidad"), new LocalidadDTO (resultSet.getString("idProvincia"), resultSet.getString("idLocalidad"), resultSet.getString("localidad")));
-			}
-		} 
-		catch (SQLException e) {
-			e.printStackTrace();
-		}
-	}
+	public UbicacionDTO () {} 
+
 	
 
-	public List<LocalidadDTO> getLocalidades(String idProvincia) {
-		return UbicacionDTO.localidadByIdProvincia.get(idProvincia);
-		}
-	
-	public List<ProvinciaDTO> getProvincias(String idPais) {
-		return UbicacionDTO.provinciaByIdPais.get(idPais);
 
-	}
-	
-	public List<PaisDTO> getPaises() {
-		return paises;
-	}
 	
 	public LocalidadDTO getLocalidad(String idLocalidad) {
 		LocalidadDTO ret = null;
@@ -179,6 +86,103 @@ public class UbicacionDTO {
 	public String getPaisIdByName(String paisName) {
 		return this.paisByName.get(paisName).getIdPais();
 	}
+
+
+
+	public HashMap<String, List<LocalidadDTO>> getLocalidadByIdProvincia() {
+		return localidadByIdProvincia;
+	}
+
+
+
+	public void setLocalidadByIdProvincia(String idProvincia, String idLocalidad, String localidad) {
+		if(this.localidadByIdProvincia.containsKey(idProvincia)) {
+			localidadByIdProvincia.get(idProvincia).add(new LocalidadDTO(idProvincia,idLocalidad, localidad));
+		}else {
+			List<LocalidadDTO> localidades = new ArrayList<LocalidadDTO>();
+			localidades.add(new LocalidadDTO(idProvincia, idLocalidad, localidad));
+			this.localidadByIdProvincia.put(idProvincia, localidades);
+		}
+		this.localidadByName.put(localidad, new LocalidadDTO (idProvincia, idLocalidad, localidad));
+	}
+
+
+
+	public HashMap<String, List<ProvinciaDTO>> getProvinciaByIdPais() {
+		return provinciaByIdPais;
+	}
+
+
+
+	public void setProvinciaByIdPais(String idPais, String idProvincia, String provincia) {
+		if(this.provinciaByIdPais.containsKey(idPais)) {
+			this.provinciaByIdPais.get(idPais).add(new ProvinciaDTO(idPais, idProvincia, provincia));
+		}else {
+			List<ProvinciaDTO> provincias = new ArrayList<ProvinciaDTO>();
+			provincias.add(new ProvinciaDTO(idPais, idProvincia,provincia));
+			this.provinciaByIdPais.put(idPais, provincias);
+		}
+		this.provinciaByName.put(provincia, new ProvinciaDTO (idPais,idProvincia, provincia));
+	
+	}
+
+
+
+	public HashMap<String, LocalidadDTO> getLocalidadByName() {
+		return localidadByName;
+	}
+
+
+
+	public void setLocalidadByName(HashMap<String, LocalidadDTO> localidadByName) {
+		this.localidadByName = localidadByName;
+	}
+
+
+
+	public HashMap<String, ProvinciaDTO> getProvinciaByName() {
+		return provinciaByName;
+	}
+
+
+
+	public void setProvinciaByName(HashMap<String, ProvinciaDTO> provinciaByName) {
+		this.provinciaByName = provinciaByName;
+	}
+
+
+
+	public HashMap<String, PaisDTO> getPaisByName() {
+		return paisByName;
+	}
+
+
+
+	public void setPaisByName(HashMap<String, PaisDTO> paisByName) {
+		this.paisByName = paisByName;
+	}
+
+
+
+	public void setPaises(String idPais, String nombrePais) {
+		this.paisByName.put(nombrePais, new PaisDTO(idPais, nombrePais));
+		this.paises.add(new PaisDTO(idPais, nombrePais));
+	}
+	
+	public List<LocalidadDTO> getLocalidades(String idProvincia) {
+		return this.localidadByIdProvincia.get(idProvincia);
+		}
+	
+	public List<ProvinciaDTO> getProvincias(String idPais) {
+		return this.provinciaByIdPais.get(idPais);
+
+	}
+	
+	public List<PaisDTO> getPaises() {
+		return paises;
+	}
+	
+	
 	
 	
 	

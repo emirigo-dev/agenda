@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -16,6 +17,7 @@ import dto.PaisDTO;
 import dto.PersonaDTO;
 import dto.ProvinciaDTO;
 import dto.TipoContactoDTO;
+import dto.UbicacionDTO;
 
 public class Controlador implements ActionListener
 {
@@ -25,6 +27,7 @@ public class Controlador implements ActionListener
 		private HashMap<String, LocalidadDTO> localidadByName;
 		private HashMap<String, ProvinciaDTO> provinciaById;
 		private HashMap<String, PaisDTO> paisById;
+		private UbicacionDTO ubicacion;
 		private VentanaPersona ventanaPersona;
 		private VentanaPersona ventanaPersonaEditar;
 		private Agenda agenda;
@@ -37,7 +40,7 @@ public class Controlador implements ActionListener
 			this.vista.getBtnBorrar().addActionListener(s->borrarPersona(s));
 			this.vista.getBtnReporte().addActionListener(r->mostrarReporte(r));
 			this.agenda = agenda;
-			this.ventanaPersona = VentanaPersona.getInstance(this.agenda.obtenerTipoContacto());		
+			this.ventanaPersona = VentanaPersona.getInstance(this.agenda.obtenerTipoContacto(), this.agenda.obtenerUbicaciones());		
 			this.ventanaPersona.getBtnAgregarPersona().addActionListener(p->guardarPersona(p));
 		}
 		
@@ -48,7 +51,11 @@ public class Controlador implements ActionListener
 		private void ventanaEditarPersona(ActionEvent b) {
 			if (this.vista.getTablaPersonas().getSelectedRow() >= 0 ) {
 				PersonaDTO persona = this.personasEnTabla.get(this.vista.getTablaPersonas().getSelectedRow());
-				this.ventanaPersonaEditar = VentanaPersona.getInstance(this.agenda.obtenerTipoContacto(),persona);		
+				ArrayList<String> datosUbicacion = new ArrayList<String>();
+				datosUbicacion.add(this.personasEnTabla.get(this.vista.getTablaPersonas().getSelectedRow()).getPais());
+				datosUbicacion.add(this.personasEnTabla.get(this.vista.getTablaPersonas().getSelectedRow()).getProvincia());
+				datosUbicacion.add(this.personasEnTabla.get(this.vista.getTablaPersonas().getSelectedRow()).getLocalidad());
+				this.ventanaPersonaEditar = VentanaPersona.getInstance(this.agenda.obtenerTipoContacto(),persona, datosUbicacion, this.agenda.obtenerUbicaciones());		
 				this.ventanaPersonaEditar.getBtnEditarPersona().addActionListener(e->editarPersona(e, persona.getIdPersona()));
 				
 				this.ventanaPersonaEditar.mostrarVentana();
@@ -144,8 +151,10 @@ public class Controlador implements ActionListener
 		{
 			this.personasEnTabla = agenda.obtenerPersonas();
 			this.tipoDeContactoByName = agenda.obtenerTipoContacto();
+			this.ubicacion = agenda.obtenerUbicaciones();
 			this.localidadByName = agenda.obtenerLocalidades();
 			this.ventanaPersona.llenarTipoContacto(this.tipoDeContactoByName);
+			this.ventanaPersona.llenaUbicacion(this.ubicacion);
 			
 			this.vista.llenarTabla(this.personasEnTabla);
 		}

@@ -50,32 +50,33 @@ public class VentanaPersona extends JFrame
 	private JComboBox localidad;
 	private HashMap<String, TipoContactoDTO> tipoContactoByName;
 	List<LocalidadDTO> localidades;
-	UbicacionDTO ubicacion = UbicacionDTO.constructor();
-
+	UbicacionDTO ubicacion;
 
 	
-	public static VentanaPersona getInstance(HashMap<String, TipoContactoDTO> tipoContactoByName)
+	
+	public static VentanaPersona getInstance(HashMap<String, TipoContactoDTO> tipoContactoByName, UbicacionDTO ubicacion)
 	{
 		if(INSTANCE == null)
 		{
-			INSTANCE = new VentanaPersona(tipoContactoByName); 	
-			return new VentanaPersona(tipoContactoByName);
+			INSTANCE = new VentanaPersona(tipoContactoByName, ubicacion); 	
+			return new VentanaPersona(tipoContactoByName, ubicacion);
 		}
 		else
-			return new VentanaPersona(tipoContactoByName);
+			return new VentanaPersona(tipoContactoByName, ubicacion);
 	}
 	
-	public static VentanaPersona getInstance(HashMap<String, TipoContactoDTO> tipoContactoByName, PersonaDTO persona)
+	public static VentanaPersona getInstance(HashMap<String, TipoContactoDTO> tipoContactoByName, PersonaDTO persona,ArrayList<String> datosUbicacion, UbicacionDTO ubicacion)
 	{
-		INSTANCE_EDITAR = new VentanaPersona(tipoContactoByName, persona); 	
-		return new VentanaPersona(tipoContactoByName, persona);
+		INSTANCE_EDITAR = new VentanaPersona(tipoContactoByName, persona, datosUbicacion, ubicacion); 	
+		return new VentanaPersona(tipoContactoByName, persona, datosUbicacion, ubicacion);
 	}
 
-	private VentanaPersona(HashMap<String, TipoContactoDTO> tipoContactoByName) 
+	private VentanaPersona(HashMap<String, TipoContactoDTO> tipoContactoByName, UbicacionDTO ubicacion) 
 	{
 		super();
 		
 		this.tipoContactoByName = tipoContactoByName;
+		this.ubicacion = ubicacion;
 		
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 451, 526);
@@ -217,10 +218,11 @@ public class VentanaPersona extends JFrame
 		this.setVisible(false);
 	}
 	
-	private VentanaPersona(HashMap<String, TipoContactoDTO> tipoContactoByName, PersonaDTO persona){
+	private VentanaPersona(HashMap<String, TipoContactoDTO> tipoContactoByName, PersonaDTO persona, ArrayList<String> datosUbicacion, UbicacionDTO ubicacion){
 		super();
 		
 		this.tipoContactoByName = tipoContactoByName;
+		this.ubicacion = ubicacion;
 		
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 451, 526);
@@ -345,6 +347,8 @@ public class VentanaPersona extends JFrame
 		
 		provincia = new JComboBox();
 		provincia.setBounds(153, 354, 258, 23);
+
+
 		panel.add(provincia);
 		
 		localidad = new JComboBox();
@@ -370,7 +374,10 @@ public class VentanaPersona extends JFrame
 		cargarLocalidades();
 		this.pais.addActionListener(e -> cargarProvincias());
 		this.provincia.addActionListener(x -> cargarLocalidades());
-		
+		pais.setSelectedItem(datosUbicacion.get(0));
+		provincia.setSelectedItem(datosUbicacion.get(1));
+		localidad.setSelectedItem(datosUbicacion.get(2));
+
 		this.setVisible(false);
 	}
 	
@@ -438,9 +445,11 @@ public class VentanaPersona extends JFrame
 	private void cargarPaises() {
 		this.pais.removeAllItems();
 		for(PaisDTO pais: ubicacion.getPaises()) {
+			System.out.println("Prueba2 " + pais);
 			String item = pais.getPais();
 			this.pais.addItem(item);
 		}
+		System.out.println("PROBANDO PROBANDO" + this.pais.getSelectedItem().toString());
 	}
 	
 	private void cargarProvincias() {
@@ -530,5 +539,20 @@ public class VentanaPersona extends JFrame
 	public void setTxtTelefono(JTextField txtTelefono) {
 		this.txtTelefono = txtTelefono;
 	}
+	
+	
+	public void llenaUbicacion(UbicacionDTO ubicacion) {
+		this.ubicacion = ubicacion;
+	}
+
+	public UbicacionDTO getUbicacion() {
+		return ubicacion;
+	}
+
+	public void setUbicacion(UbicacionDTO ubicacion) {
+		this.ubicacion = ubicacion;
+	}
+	
+	
 }
 
