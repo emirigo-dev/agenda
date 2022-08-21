@@ -9,14 +9,29 @@ public class PersonaDTO
 	private String telefono;
 	private String calle;
 	private String altura;
-
 	private String piso;
 	private String email;
-	private Date cumpleanios;
+	private String cumpleanios;
 	private int tipoContactoId;
     private String tipoContacto;
     private String idLocalidad;
     private String Localidad;
+
+	public String getTipoContacto() {
+		return tipoContacto;
+	}
+
+	public void setTipoContacto(String tipoContacto) {
+		this.tipoContacto = tipoContacto;
+	}
+
+	public String getLocalidad() {
+		return Localidad;
+	}
+
+	public void setLocalidad(String localidad) {
+		Localidad = localidad;
+	}
 
 	public PersonaDTO(int idPersona, String nombre, String telefono)
 	{
@@ -103,11 +118,11 @@ public class PersonaDTO
 		this.email = email;
 	}
 
-	public Date getCumpleanios() {
+	public String getCumpleanios() {
 		return cumpleanios;
 	}
 
-	public void setCumpleanios(Date cumpleanios) {
+	public void setCumpleanios(String cumpleanios) {
 		this.cumpleanios = cumpleanios;
 	}
 }

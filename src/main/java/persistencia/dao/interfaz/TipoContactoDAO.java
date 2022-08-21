@@ -5,5 +5,5 @@ import dto.TipoContactoDTO;
 public interface TipoContactoDAO 
 {
 	
-	public HashMap<Integer, TipoContactoDTO> readAll();
+	public HashMap<String, TipoContactoDTO> readAll();
 }

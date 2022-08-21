@@ -35,5 +35,10 @@ public class LocalidadDTO {
 	public void setLocalidad(String localidad) {
 		this.localidad = localidad;
 	}
+	
+	@Override
+	public String toString() {
+		return "Localidad [idProvincia=" + idProvincia + ", idLocalidad=" + idLocalidad + ", localidad=" + localidad + "]";
+	}
 
 }
