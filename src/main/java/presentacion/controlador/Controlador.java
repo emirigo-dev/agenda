@@ -25,13 +25,15 @@ public class Controlador implements ActionListener
 		private HashMap<String, LocalidadDTO> localidadByName;
 		private HashMap<String, ProvinciaDTO> provinciaById;
 		private HashMap<String, PaisDTO> paisById;
-		private VentanaPersona ventanaPersona; 
+		private VentanaPersona ventanaPersona;
+		private VentanaPersona ventanaPersonaEditar;
 		private Agenda agenda;
 		
 		public Controlador(Vista vista, Agenda agenda)
 		{
 			this.vista = vista;
 			this.vista.getBtnAgregar().addActionListener(a->ventanaAgregarPersona(a));
+			this.vista.getBtnEditar().addActionListener(b->ventanaEditarPersona(b));
 			this.vista.getBtnBorrar().addActionListener(s->borrarPersona(s));
 			this.vista.getBtnReporte().addActionListener(r->mostrarReporte(r));
 			this.agenda = agenda;
@@ -42,6 +44,18 @@ public class Controlador implements ActionListener
 		private void ventanaAgregarPersona(ActionEvent a) {
 			this.ventanaPersona.mostrarVentana();
 		}
+		
+		private void ventanaEditarPersona(ActionEvent b) {
+			if (this.vista.getTablaPersonas().getSelectedRow() >= 0 ) {
+				PersonaDTO persona = this.personasEnTabla.get(this.vista.getTablaPersonas().getSelectedRow());
+				this.ventanaPersonaEditar = VentanaPersona.getInstance(this.agenda.obtenerTipoContacto(),persona);		
+				this.ventanaPersonaEditar.getBtnEditarPersona().addActionListener(e->editarPersona(e, persona.getIdPersona()));
+				
+				this.ventanaPersonaEditar.mostrarVentana();
+			} else {
+				this.vista.showError();
+			}
+		}
 
 		private void guardarPersona(ActionEvent p) {
 			String nombre = this.ventanaPersona.getTxtNombre().getText();
@@ -51,10 +65,10 @@ public class Controlador implements ActionListener
 			String callePersona = this.ventanaPersona.getCalle().getText();
 			String alturaCalle = this.ventanaPersona.getAltura().getText();
 			String piso = this.ventanaPersona.getPiso().getText();
+			String dpto = this.ventanaPersona.getDepto().getText();
 			String email = this.ventanaPersona.getEmail().getText();
 			String pattern = "yyyy-MM-dd";
 			SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
-			String date = simpleDateFormat.format(this.ventanaPersona.getFechNacimiento().getDate());
 			PersonaDTO nuevaPersona = new PersonaDTO(0, nombre, tel);
 			nuevaPersona.setTipoContactoId(tipoDeContactoByName.get(tipoContacto).getIdTipoContacto());
 			nuevaPersona.setLocalidad(localidadByName.get(localidadPersona).getLocalidad());
@@ -62,12 +76,46 @@ public class Controlador implements ActionListener
 			nuevaPersona.setCalle(callePersona);
 			nuevaPersona.setAltura(alturaCalle);
 			nuevaPersona.setPiso(piso);
+			nuevaPersona.setDpto(dpto);
 			nuevaPersona.setEmail(email);
-			nuevaPersona.setCumpleanios(date);
+			if (this.ventanaPersona.getFechNacimiento().getDate() != null) {				
+				String date = simpleDateFormat.format(this.ventanaPersona.getFechNacimiento().getDate());
+				nuevaPersona.setCumpleanios(date);
+			}
 			this.agenda.agregarPersona(nuevaPersona);
 			this.refrescarTabla();
 			this.ventanaPersona.cerrar();
-			
+		}
+		
+		private void editarPersona(ActionEvent p, int idPersona) {
+			String nombre = this.ventanaPersonaEditar.getTxtNombre().getText();
+			String tel = ventanaPersonaEditar.getTxtTelefono().getText();
+			String tipoContacto = this.ventanaPersonaEditar.getContactTypeName();
+			String localidadPersona = this.ventanaPersonaEditar.getLocalidadName();
+			String callePersona = this.ventanaPersonaEditar.getCalle().getText();
+			String alturaCalle = this.ventanaPersonaEditar.getAltura().getText();
+			String piso = this.ventanaPersonaEditar.getPiso().getText();
+			String dpto = this.ventanaPersonaEditar.getDepto().getText();
+			String email = this.ventanaPersonaEditar.getEmail().getText();
+			String pattern = "yyyy-MM-dd";
+			SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+			PersonaDTO nuevaPersona = new PersonaDTO(0, nombre, tel);
+			nuevaPersona.setTipoContactoId(tipoDeContactoByName.get(tipoContacto).getIdTipoContacto());
+			nuevaPersona.setLocalidad(localidadByName.get(localidadPersona).getLocalidad());
+			nuevaPersona.setIdLocalidad(localidadByName.get(localidadPersona).getIdLocalidad());
+			nuevaPersona.setCalle(callePersona);
+			nuevaPersona.setAltura(alturaCalle);
+			nuevaPersona.setPiso(piso);
+			nuevaPersona.setDpto(dpto);
+			nuevaPersona.setEmail(email);
+			if (this.ventanaPersonaEditar.getFechNacimiento().getDate() != null) {				
+				String date = simpleDateFormat.format(this.ventanaPersonaEditar.getFechNacimiento().getDate());
+				nuevaPersona.setCumpleanios(date);
+			}
+			nuevaPersona.setIdPersona(idPersona);
+			this.agenda.editarPersona(nuevaPersona);
+			this.refrescarTabla();
+			this.ventanaPersonaEditar.cerrar();
 		}
 
 		private void mostrarReporte(ActionEvent r) {
@@ -97,21 +145,10 @@ public class Controlador implements ActionListener
 			this.personasEnTabla = agenda.obtenerPersonas();
 			this.tipoDeContactoByName = agenda.obtenerTipoContacto();
 			this.localidadByName = agenda.obtenerLocalidades();
-			this.provinciaById = agenda.obtenerProvincias();
-			this.paisById = agenda.obtenerPaises();
 			this.ventanaPersona.llenarTipoContacto(this.tipoDeContactoByName);
-		
 			
 			this.vista.llenarTabla(this.personasEnTabla);
 		}
-		
-//		public static HashMap<Integer, TipoContactoDTO> hola(){
-//			return;
-//		}
-//		this.tipoDeContactoById = agenda.obtenerTipoContacto();
-//		this.localidadById = agenda.obtenerLocalidades();
-//		this.provinciaById = agenda.obtenerProvincias();
-//		this.paisById = agenda.obtenerPaises();
 
 		@Override
 		public void actionPerformed(ActionEvent e) { }

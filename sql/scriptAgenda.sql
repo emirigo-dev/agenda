@@ -37,7 +37,7 @@ CREATE TABLE PERSONAS
   piso varchar(20),
   dpto varchar(20),
   email varchar(20),
-  cumpleaños date,
+  cumpleanios date,
   idTipoContacto int(11),
   idLocalidad varchar(11),
   PRIMARY KEY (idPersona),
@@ -56,8 +56,6 @@ INSERT INTO LOCALIDAD (idProvincia, idLocalidad, localidad) VALUES ('BA', 'LP', 
 INSERT INTO LOCALIDAD (idProvincia, idLocalidad, localidad) VALUES ('MEN', 'SR', 'San Rafael');
 INSERT INTO LOCALIDAD (idProvincia, idLocalidad, localidad) VALUES ('MEN', 'MEN', 'Mendoza');
 INSERT INTO LOCALIDAD (idProvincia, idLocalidad, localidad) VALUES ('COR', 'MC', 'Mina Clavero');
-INSERT INTO LOCALIDAD (idProvincia, idLocalidad, localidad) VALUES ('COR', 'CARL_PAZ', 'Villa Carlos Paz');
-
 INSERT INTO LOCALIDAD (idProvincia, idLocalidad, localidad) VALUES ('COR', 'CARL_PAZ', 'Villa Carlos Paz');
 
 INSERT INTO TIPO_CONTACTO (Tipo) VALUES ('Familia');
