@@ -13,9 +13,9 @@ import dto.PersonaDTO;
 
 public class PersonaDAOSQL implements PersonaDAO
 {
-	private static final String insert = "INSERT INTO personas(idPersona, nombre, telefono, idTipoContacto) VALUES(?, ?, ?, ?)";
+	private static final String insert = "INSERT INTO personas(idPersona, nombre, telefono, idTipoContacto, idLocalidad, Calle, altura, piso, email, cumpleaños) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 	private static final String delete = "DELETE FROM personas WHERE idPersona = ?";
-	private static final String readall = "SELECT * FROM Personas p INNER JOIN TIPO_CONTACTO t ON p.idTipoContacto = t.idTipoContacto ORDER BY Nombre";
+	private static final String readall = "SELECT * FROM Personas p INNER JOIN TIPO_CONTACTO t ON p.idTipoContacto = t.idTipoContacto INNER JOIN LOCALIDAD l ON p.idLocalidad = l.idLocalidad";
 	public boolean insert(PersonaDTO persona)
 	{
 
@@ -29,7 +29,15 @@ public class PersonaDAOSQL implements PersonaDAO
 			statement.setString(2, persona.getNombre());
 			statement.setString(3, persona.getTelefono());
 			statement.setInt(4, persona.getTipoContactoId());
+			statement.setString(5, persona.getIdLocalidad());
+			statement.setString(6, persona.getCalle());
+			statement.setString(7, persona.getAltura());
+			statement.setString(8, persona.getPiso());
+			statement.setString(9, persona.getEmail());
+			statement.setString(10, persona.getCumpleanios());
 
+
+			
 			if(statement.executeUpdate() > 0)
 			{
 				conexion.commit();
@@ -104,11 +112,11 @@ public class PersonaDAOSQL implements PersonaDAO
 		persona.setAltura(resultSet.getString("altura"));
 		persona.setPiso(resultSet.getString("piso"));
 		persona.setEmail(resultSet.getString("email"));
-//		persona.setIdLocalidad(resultSet.getString("idLocalidad"));
+		persona.setIdLocalidad(resultSet.getString("idLocalidad"));
 		persona.setTipoContactoId(resultSet.getInt("idTipoContacto"));
-		persona.setCumpleanios(resultSet.getDate("cumpleaños"));
+		persona.setCumpleanios(resultSet.getString("cumpleaños"));
 		persona.setTipoContacto(resultSet.getString("Tipo"));
-//		persona.setLocalidad(resultSet.getString("localidad"));
+		persona.setLocalidad(resultSet.getString("localidad"));
 		
 		return persona; 
 	}

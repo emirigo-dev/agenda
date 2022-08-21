@@ -145,7 +145,7 @@ public class Vista
 			String altura = p.getAltura();
 			String piso = p.getPiso();
 			String email = p.getEmail();
-			Date cumpleanios = p.getCumpleanios();
+			String cumpleanios = p.getCumpleanios();
 			String tipoContacto = p.getTipoContacto();
 
 			

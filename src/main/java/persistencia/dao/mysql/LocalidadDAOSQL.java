@@ -16,7 +16,7 @@ public class LocalidadDAOSQL implements LocalidadDAO{
 	{
 		PreparedStatement statement;
 		ResultSet resultSet; //Guarda el resultado de la query
-		HashMap<String, LocalidadDTO> localidadById = new HashMap<String, LocalidadDTO>();
+		HashMap<String, LocalidadDTO> localidadByName = new HashMap<String, LocalidadDTO>();
 		Conexion conexion = Conexion.getConexion();
 		try 
 		{
@@ -25,14 +25,14 @@ public class LocalidadDAOSQL implements LocalidadDAO{
 			while(resultSet.next())
 			{
 				LocalidadDTO localidad = getLocalidadDTO(resultSet);
-				localidadById.put(localidad.getIdLocalidad(), localidad);
+				localidadByName.put(localidad.getLocalidad(), localidad);
 			}
 		} 
 		catch (SQLException e) 
 		{
 			e.printStackTrace();
 		}
-		return localidadById;
+		return localidadByName;
 	}
 		
 	private LocalidadDTO getLocalidadDTO(ResultSet resultSet) throws SQLException
