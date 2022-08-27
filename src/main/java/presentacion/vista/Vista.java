@@ -29,7 +29,7 @@ public class Vista
 	private JButton btnBorrar;
 	private JButton btnReporte;
 	private DefaultTableModel modelPersonas;
-	private  String[] nombreColumnas = {"Nombre y apellido","Telefono", "Calle", "Localidad", "Provincia", "Pais", "Altura", "Piso", "dpto", "Email", "Cumpleaños", "Tipo de contacto"};
+	private  String[] nombreColumnas = {"Nombre y apellido","Telefono", "Calle", "Localidad", "Provincia", "Pais", "Altura", "Piso", "dpto", "Email", "Cumpleaños", "Tipo de contacto", "Preferencia de contacto"};
 
 	public Vista() 
 	{
@@ -157,8 +157,9 @@ public class Vista
 			String email = p.getEmail();
 			String cumpleanios = p.getCumpleanios();
 			String tipoContacto = p.getTipoContacto();
+			String preferenciaContacto = p.getPreferenciaContacto();
 			
-			Object[] fila = {nombre, tel, calle, localidad, provincia, pais, altura, piso, dpto, email, cumpleanios, tipoContacto};
+			Object[] fila = {nombre, tel, calle, localidad, provincia, pais, altura, piso, dpto, email, cumpleanios, tipoContacto, preferenciaContacto};
 			this.getModelPersonas().addRow(fila);
 		}
 		

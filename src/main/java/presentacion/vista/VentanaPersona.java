@@ -25,12 +25,15 @@ import dto.UbicacionDTO;
 import dto.LocalidadDTO;
 import dto.PaisDTO;
 import dto.PersonaDTO;
+import dto.PreferenciaContactoDTO;
 import dto.ProvinciaDTO;
 
 
 public class VentanaPersona extends JFrame 
 {
 	private static final long serialVersionUID = 1L;
+	private static VentanaPersona INSTANCE;
+	private static VentanaPersona INSTANCE_EDITAR;
 	private JPanel contentPane;
 	private JTextField txtNombre;
 	private JTextField txtTelefono;
@@ -43,50 +46,51 @@ public class VentanaPersona extends JFrame
 	private JButton btnAgregarPersona;
 	private JButton btnEditarPersona;
 	private JComboBox tipoContactoComboBox;
-	private static VentanaPersona INSTANCE;
-	private static VentanaPersona INSTANCE_EDITAR;
+	private JComboBox preferenciaContactoComboBox;
 	private JComboBox pais;
 	private JComboBox provincia;
 	private JComboBox localidad;
 	private HashMap<String, TipoContactoDTO> tipoContactoByName;
+	private HashMap<String, PreferenciaContactoDTO> preferenciaContactoByName;
 	List<LocalidadDTO> localidades;
 	UbicacionDTO ubicacion;
 
 	
 	
-	public static VentanaPersona getInstance(HashMap<String, TipoContactoDTO> tipoContactoByName, UbicacionDTO ubicacion)
+	public static VentanaPersona getInstance(HashMap<String, TipoContactoDTO> tipoContactoByName, HashMap<String, PreferenciaContactoDTO> preferenciaContactoByName, UbicacionDTO ubicacion)
 	{
 		if(INSTANCE == null)
 		{
-			INSTANCE = new VentanaPersona(tipoContactoByName, ubicacion); 	
-			return new VentanaPersona(tipoContactoByName, ubicacion);
+			INSTANCE = new VentanaPersona(tipoContactoByName, preferenciaContactoByName, ubicacion); 	
+			return new VentanaPersona(tipoContactoByName, preferenciaContactoByName, ubicacion);
 		}
 		else
-			return new VentanaPersona(tipoContactoByName, ubicacion);
+			return new VentanaPersona(tipoContactoByName, preferenciaContactoByName, ubicacion);
 	}
 	
-	public static VentanaPersona getInstance(HashMap<String, TipoContactoDTO> tipoContactoByName, PersonaDTO persona,ArrayList<String> datosUbicacion, UbicacionDTO ubicacion)
+	public static VentanaPersona getInstance(HashMap<String, TipoContactoDTO> tipoContactoByName, HashMap<String, PreferenciaContactoDTO> preferenciaContactoByName, PersonaDTO persona,ArrayList<String> datosUbicacion, UbicacionDTO ubicacion)
 	{
-		INSTANCE_EDITAR = new VentanaPersona(tipoContactoByName, persona, datosUbicacion, ubicacion); 	
-		return new VentanaPersona(tipoContactoByName, persona, datosUbicacion, ubicacion);
+		INSTANCE_EDITAR = new VentanaPersona(tipoContactoByName, preferenciaContactoByName, persona, datosUbicacion, ubicacion); 	
+		return new VentanaPersona(tipoContactoByName, preferenciaContactoByName, persona, datosUbicacion, ubicacion);
 	}
 
-	private VentanaPersona(HashMap<String, TipoContactoDTO> tipoContactoByName, UbicacionDTO ubicacion) 
+	private VentanaPersona(HashMap<String, TipoContactoDTO> tipoContactoByName, HashMap<String, PreferenciaContactoDTO> preferenciaContactoByName, UbicacionDTO ubicacion) 
 	{
 		super();
 		
 		this.tipoContactoByName = tipoContactoByName;
+		this.preferenciaContactoByName = preferenciaContactoByName;
 		this.ubicacion = ubicacion;
 		
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 451, 526);
+		setBounds(100, 100, 526, 600);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
 		JPanel panel = new JPanel();
-		panel.setBounds(0, 0, 438, 475);
+		panel.setBounds(0, 0, 526, 600);
 		contentPane.add(panel);
 		panel.setLayout(null);
 		
@@ -98,116 +102,118 @@ public class VentanaPersona extends JFrame
 		lblTelfono.setBounds(29, 52, 113, 19);
 		panel.add(lblTelfono);
 		
-		String[] tipoContacto = this.tipoContactoByName.keySet().toArray(new String[this.tipoContactoByName.keySet().size()]);
 		JLabel lblTipoContacto = new JLabel("Tipo de contacto");
 		lblTipoContacto.setBounds(29,92,113,19);
 		panel.add(lblTipoContacto);
 		
-		this.tipoContactoComboBox  = new JComboBox(tipoContacto);
-		tipoContactoComboBox.setBounds(153, 92, 100, 23);
-		panel.add(tipoContactoComboBox);
+		JLabel lblPreferenciaContacto = new JLabel("Preferecia de contacto");
+		lblPreferenciaContacto.setBounds(29,131,150,19);
+		panel.add(lblPreferenciaContacto);
 		
 		JLabel lblFechaNacimiento = new JLabel("Fecha Nacimiento");
-		lblFechaNacimiento.setBounds(29, 131, 114, 19);
+		lblFechaNacimiento.setBounds(29, 171, 114, 19);
 		panel.add(lblFechaNacimiento);
 		
-		JLabel lblDatosDeDomicilio = new JLabel("Datos de Domicilio");
-		lblDatosDeDomicilio.setBounds(29, 224, 114, 19);
-		panel.add(lblDatosDeDomicilio);
-		
-		
 		JLabel lblEmail = new JLabel("Email");
-		lblEmail.setBounds(29, 165, 100, 19);
+		lblEmail.setBounds(29, 205, 100, 19);
 		panel.add(lblEmail);
 		
+		JLabel lblDatosDeDomicilio = new JLabel("Datos de Domicilio");
+		lblDatosDeDomicilio.setBounds(29, 250, 114, 19);
+		panel.add(lblDatosDeDomicilio);
+		
+		JLabel lblCalle = new JLabel("Calle");
+		lblCalle.setBounds(29, 280, 100, 19);
+		panel.add(lblCalle);
+		
+		JLabel lblAltura = new JLabel("Altura");
+		lblAltura.setBounds(29, 314, 100, 19);
+		panel.add(lblAltura);
+		
+		JLabel lblPiso = new JLabel("Piso");
+		lblPiso.setBounds(260, 314, 25, 19);
+		panel.add(lblPiso);
+		
+		JLabel lblDepto = new JLabel("Depto");
+		lblDepto.setBounds(343, 314, 36, 19);
+		panel.add(lblDepto);
+		
+		JLabel lblPais = new JLabel("Pais");
+		lblPais.setBounds(29, 348, 100, 19);
+		panel.add(lblPais);
+		
+		JLabel lblProvincia = new JLabel("Provincia");
+		lblProvincia.setBounds(29, 396, 100, 19);
+		panel.add(lblProvincia);
+		
+		JLabel lblLocalidad = new JLabel("Localidad");
+		lblLocalidad.setBounds(29, 444, 100, 19);
+		panel.add(lblLocalidad);
 		
 		txtNombre = new JTextField();
-		txtNombre.setBounds(153, 8, 164, 20);
+		txtNombre.setBounds(192, 8, 164, 20);
 		panel.add(txtNombre);
 		txtNombre.setColumns(10);
 		
 		txtTelefono = new JTextField();
-		txtTelefono.setBounds(153, 49, 164, 20);
+		txtTelefono.setBounds(192, 49, 164, 20);
 		panel.add(txtTelefono);
 		txtTelefono.setColumns(10);
 		
+		String[] tipoContacto = this.tipoContactoByName.keySet().toArray(new String[this.tipoContactoByName.keySet().size()]);
+		this.tipoContactoComboBox  = new JComboBox(tipoContacto);
+		tipoContactoComboBox.setBounds(192, 92, 100, 23);
+		panel.add(tipoContactoComboBox);
+		
+		String[] preferenciaContacto = this.preferenciaContactoByName.keySet().toArray(new String[this.preferenciaContactoByName.keySet().size()]);
+		this.preferenciaContactoComboBox  = new JComboBox(preferenciaContacto);
+		preferenciaContactoComboBox.setBounds(192, 131, 100, 23);
+		panel.add(preferenciaContactoComboBox);
+		
+		fechNacimiento = new JDateChooser("yyyy/MM/dd","####/##/##", '_');
+		fechNacimiento.setBounds(192, 171, 110, 23);
+		panel.add(fechNacimiento);
+		
 		Email = new JTextField();
 		Email.setColumns(10);
-		Email.setBounds(153, 167, 258, 23);
+		Email.setBounds(192, 205, 258, 23);
 		panel.add(Email);
-		
 		
 		calle = new JTextField();
 		calle.setColumns(10);
-		calle.setBounds(153, 252, 258, 23);
+		calle.setBounds(192, 280, 258, 23);
 		panel.add(calle);
 		
 		altura = new JTextField();
 		altura.setColumns(10);
-		altura.setBounds(153, 286, 66, 23);
+		altura.setBounds(192, 314, 66, 23);
 		panel.add(altura);
 		
 		piso = new JTextField();
 		piso.setColumns(10);
-		piso.setBounds(262, 286, 51, 23);
+		piso.setBounds(290, 314, 51, 23);
 		panel.add(piso);
 		
 		depto = new JTextField();
 		depto.setColumns(10);
-		depto.setBounds(360, 286, 51, 23);
+		depto.setBounds(380, 314, 51, 23);
 		panel.add(depto);
 		
-		JLabel lblPiso = new JLabel("Piso");
-		lblPiso.setBounds(229, 288, 25, 19);
-		panel.add(lblPiso);
-		
-		JLabel lblDepto = new JLabel("Depto");
-		lblDepto.setBounds(325, 288, 36, 19);
-		panel.add(lblDepto);
-		
-		JLabel lblCalle = new JLabel("Calle");
-		lblCalle.setBounds(29, 254, 100, 19);
-		panel.add(lblCalle);
-		
-		JLabel lblAltura = new JLabel("Altura");
-		lblAltura.setBounds(29, 288, 100, 19);
-		panel.add(lblAltura);
-		
-		
-		fechNacimiento = new JDateChooser("yyyy/MM/dd","####/##/##", '_');
-		fechNacimiento.setBounds(153, 129, 110, 23);
-		panel.add(fechNacimiento);
-		
-	
-		btnAgregarPersona = new JButton("Agregar");
-		btnAgregarPersona.setBounds(322, 430, 89, 23);
-		panel.add(btnAgregarPersona);
-		
 		pais = new JComboBox();
-		pais.setBounds(153, 320, 258, 23);
+		pais.setBounds(192, 348, 258, 23);
 		panel.add(pais);
 		
 		provincia = new JComboBox();
-		provincia.setBounds(153, 354, 258, 23);
+		provincia.setBounds(192, 396, 258, 23);
 		panel.add(provincia);
 		
 		localidad = new JComboBox();
-		localidad.setBounds(153, 388, 258, 23);
+		localidad.setBounds(192, 444, 258, 23);
 		panel.add(localidad);
 		
-		
-		JLabel lblPais = new JLabel("Pais");
-		lblPais.setBounds(29, 322, 100, 19);
-		panel.add(lblPais);
-		
-		JLabel lblProvincia = new JLabel("Provincia");
-		lblProvincia.setBounds(29, 356, 100, 19);
-		panel.add(lblProvincia);
-		
-		JLabel lblLocalidad = new JLabel("Localidad");
-		lblLocalidad.setBounds(29, 390, 100, 19);
-		panel.add(lblLocalidad);
-		
+		btnAgregarPersona = new JButton("Agregar");
+		btnAgregarPersona.setBounds(322, 485, 89, 23);
+		panel.add(btnAgregarPersona);
 		
 		cargarPaises();
 		cargarProvincias();
@@ -218,21 +224,22 @@ public class VentanaPersona extends JFrame
 		this.setVisible(false);
 	}
 	
-	private VentanaPersona(HashMap<String, TipoContactoDTO> tipoContactoByName, PersonaDTO persona, ArrayList<String> datosUbicacion, UbicacionDTO ubicacion){
+	private VentanaPersona(HashMap<String, TipoContactoDTO> tipoContactoByName, HashMap<String, PreferenciaContactoDTO> preferenciaContactoByName, PersonaDTO persona, ArrayList<String> datosUbicacion, UbicacionDTO ubicacion){
 		super();
 		
 		this.tipoContactoByName = tipoContactoByName;
+		this.preferenciaContactoByName = preferenciaContactoByName;
 		this.ubicacion = ubicacion;
 		
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 451, 526);
+		setBounds(100, 100, 526, 600);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
 		JPanel panel = new JPanel();
-		panel.setBounds(0, 0, 438, 475);
+		panel.setBounds(0, 0, 526, 600);
 		contentPane.add(panel);
 		panel.setLayout(null);
 		
@@ -244,88 +251,77 @@ public class VentanaPersona extends JFrame
 		lblTelfono.setBounds(29, 52, 113, 19);
 		panel.add(lblTelfono);
 		
-		String[] tipoContacto = this.tipoContactoByName.keySet().toArray(new String[this.tipoContactoByName.keySet().size()]);
 		JLabel lblTipoContacto = new JLabel("Tipo de contacto");
 		lblTipoContacto.setBounds(29,92,113,19);
 		panel.add(lblTipoContacto);
 		
-		this.tipoContactoComboBox  = new JComboBox(tipoContacto);
-		tipoContactoComboBox.setBounds(153, 92, 100, 23);
-		tipoContactoComboBox.setSelectedItem(persona.getTipoContacto());
-		panel.add(tipoContactoComboBox);
+		JLabel lblPreferenciaContacto = new JLabel("Preferecia de contacto");
+		lblPreferenciaContacto.setBounds(29,131,150,19);
+		panel.add(lblPreferenciaContacto);
 		
 		JLabel lblFechaNacimiento = new JLabel("Fecha Nacimiento");
-		lblFechaNacimiento.setBounds(29, 131, 114, 19);
+		lblFechaNacimiento.setBounds(29, 171, 114, 19);
 		panel.add(lblFechaNacimiento);
 		
-		JLabel lblDatosDeDomicilio = new JLabel("Datos de Domicilio");
-		lblDatosDeDomicilio.setBounds(29, 224, 114, 19);
-		panel.add(lblDatosDeDomicilio);
-		
-		
 		JLabel lblEmail = new JLabel("Email");
-		lblEmail.setBounds(29, 165, 100, 19);
+		lblEmail.setBounds(29, 205, 100, 19);
 		panel.add(lblEmail);
 		
+		JLabel lblDatosDeDomicilio = new JLabel("Datos de Domicilio");
+		lblDatosDeDomicilio.setBounds(29, 250, 114, 19);
+		panel.add(lblDatosDeDomicilio);
+		
+		JLabel lblCalle = new JLabel("Calle");
+		lblCalle.setBounds(29, 280, 100, 19);
+		panel.add(lblCalle);
+		
+		JLabel lblAltura = new JLabel("Altura");
+		lblAltura.setBounds(29, 314, 100, 19);
+		panel.add(lblAltura);
+		
+		JLabel lblPiso = new JLabel("Piso");
+		lblPiso.setBounds(260, 314, 25, 19);
+		panel.add(lblPiso);
+		
+		JLabel lblDepto = new JLabel("Depto");
+		lblDepto.setBounds(343, 314, 36, 19);
+		panel.add(lblDepto);
+		
+		JLabel lblPais = new JLabel("Pais");
+		lblPais.setBounds(29, 348, 100, 19);
+		panel.add(lblPais);
+		
+		JLabel lblProvincia = new JLabel("Provincia");
+		lblProvincia.setBounds(29, 396, 100, 19);
+		panel.add(lblProvincia);
+		
+		JLabel lblLocalidad = new JLabel("Localidad");
+		lblLocalidad.setBounds(29, 444, 100, 19);
+		panel.add(lblLocalidad);
 		
 		txtNombre = new JTextField();
-		txtNombre.setBounds(153, 8, 164, 20);
+		txtNombre.setBounds(192, 8, 164, 20);
 		txtNombre.setText(persona.getNombre());
 		panel.add(txtNombre);
 		txtNombre.setColumns(10);
 		
 		txtTelefono = new JTextField();
-		txtTelefono.setBounds(153, 49, 164, 20);
+		txtTelefono.setBounds(192, 49, 164, 20);
 		txtTelefono.setText(persona.getTelefono());
 		panel.add(txtTelefono);
 		txtTelefono.setColumns(10);
 		
-		Email = new JTextField();
-		Email.setColumns(10);
-		Email.setBounds(153, 167, 258, 23);
-		Email.setText(persona.getEmail());
-		panel.add(Email);
+		String[] tipoContacto = this.tipoContactoByName.keySet().toArray(new String[this.tipoContactoByName.keySet().size()]);
+		this.tipoContactoComboBox  = new JComboBox(tipoContacto);
+		tipoContactoComboBox.setBounds(192, 92, 100, 23);
+		tipoContactoComboBox.setSelectedItem(persona.getTipoContacto());
+		panel.add(tipoContactoComboBox);
 		
-		
-		calle = new JTextField();
-		calle.setColumns(10);
-		calle.setBounds(153, 252, 258, 23);
-		calle.setText(persona.getCalle());
-		panel.add(calle);
-		
-		altura = new JTextField();
-		altura.setColumns(10);
-		altura.setBounds(153, 286, 66, 23);
-		altura.setText(persona.getAltura());
-		panel.add(altura);
-		
-		piso = new JTextField();
-		piso.setColumns(10);
-		piso.setBounds(262, 286, 51, 23);
-		piso.setText(persona.getPiso());
-		panel.add(piso);
-		
-		depto = new JTextField();
-		depto.setColumns(10);
-		depto.setBounds(360, 286, 51, 23);
-		depto.setText(persona.getDpto());
-		panel.add(depto);
-		
-		JLabel lblPiso = new JLabel("Piso");
-		lblPiso.setBounds(229, 288, 25, 19);
-		panel.add(lblPiso);
-		
-		JLabel lblDepto = new JLabel("Depto");
-		lblDepto.setBounds(325, 288, 36, 19);
-		panel.add(lblDepto);
-		
-		JLabel lblCalle = new JLabel("Calle");
-		lblCalle.setBounds(29, 254, 100, 19);
-		panel.add(lblCalle);
-		
-		JLabel lblAltura = new JLabel("Altura");
-		lblAltura.setBounds(29, 288, 100, 19);
-		panel.add(lblAltura);
+		String[] preferenciaContacto = this.preferenciaContactoByName.keySet().toArray(new String[this.preferenciaContactoByName.keySet().size()]);
+		this.preferenciaContactoComboBox  = new JComboBox(preferenciaContacto);
+		preferenciaContactoComboBox.setBounds(192, 131, 100, 23);
+		preferenciaContactoComboBox.setSelectedItem(persona.getPreferenciaContacto());
+		panel.add(preferenciaContactoComboBox);
 		
 		ZoneId defaultZoneId = ZoneId.systemDefault();
 		fechNacimiento = new JDateChooser("yyyy/MM/dd","####/##/##", '_');
@@ -334,40 +330,54 @@ public class VentanaPersona extends JFrame
 			LocalDate date = LocalDate.parse(persona.getCumpleanios());
 			fechNacimiento.setDate(Date.from(date.atStartOfDay(defaultZoneId).toInstant()));
 		}
-		fechNacimiento.setBounds(153, 129, 110, 23);
+		fechNacimiento.setBounds(192, 171, 110, 23);
 		panel.add(fechNacimiento);
-	
-		btnEditarPersona = new JButton("Editar");
-		btnEditarPersona.setBounds(322, 430, 89, 23);
-		panel.add(btnEditarPersona);
+		
+		Email = new JTextField();
+		Email.setColumns(10);
+		Email.setBounds(192, 205, 258, 23);
+		Email.setText(persona.getEmail());
+		panel.add(Email);
+		
+		calle = new JTextField();
+		calle.setColumns(10);
+		calle.setBounds(192, 280, 258, 23);
+		calle.setText(persona.getCalle());
+		panel.add(calle);
+		
+		altura = new JTextField();
+		altura.setColumns(10);
+		altura.setBounds(192, 314, 66, 23);
+		altura.setText(persona.getAltura());
+		panel.add(altura);
+		
+		piso = new JTextField();
+		piso.setColumns(10);
+		piso.setBounds(290, 314, 51, 23);
+		piso.setText(persona.getPiso());
+		panel.add(piso);
+		
+		depto = new JTextField();
+		depto.setColumns(10);
+		depto.setBounds(380, 314, 51, 23);
+		depto.setText(persona.getDpto());
+		panel.add(depto);
 		
 		pais = new JComboBox();
-		pais.setBounds(153, 320, 258, 23);
+		pais.setBounds(192, 348, 258, 23);
 		panel.add(pais);
 		
 		provincia = new JComboBox();
-		provincia.setBounds(153, 354, 258, 23);
-
-
+		provincia.setBounds(192, 396, 258, 23);
 		panel.add(provincia);
 		
 		localidad = new JComboBox();
-		localidad.setBounds(153, 388, 258, 23);
+		localidad.setBounds(192, 444, 258, 23);
 		panel.add(localidad);
 		
-		
-		JLabel lblPais = new JLabel("Pais");
-		lblPais.setBounds(29, 322, 100, 19);
-		panel.add(lblPais);
-		
-		JLabel lblProvincia = new JLabel("Provincia");
-		lblProvincia.setBounds(29, 356, 100, 19);
-		panel.add(lblProvincia);
-		
-		JLabel lblLocalidad = new JLabel("Localidad");
-		lblLocalidad.setBounds(29, 390, 100, 19);
-		panel.add(lblLocalidad);
-		
+		btnEditarPersona = new JButton("Editar");
+		btnEditarPersona.setBounds(322, 485, 89, 23);
+		panel.add(btnEditarPersona);
 		
 		cargarPaises();
 		cargarProvincias();
@@ -430,6 +440,7 @@ public class VentanaPersona extends JFrame
 		this.depto.setText(null);
 		this.fechNacimiento.setDate(null);
 		this.tipoContactoComboBox.setSelectedItem("Amigo");
+		this.preferenciaContactoComboBox.setSelectedItem("Llamada");
 		this.pais.setSelectedItem("Argentina");
 		this.provincia.setSelectedItem("Buenos Aires");
 		this.localidad.setSelectedItem("CABA");
@@ -445,11 +456,9 @@ public class VentanaPersona extends JFrame
 	private void cargarPaises() {
 		this.pais.removeAllItems();
 		for(PaisDTO pais: ubicacion.getPaises()) {
-			System.out.println("Prueba2 " + pais);
 			String item = pais.getPais();
 			this.pais.addItem(item);
 		}
-		System.out.println("PROBANDO PROBANDO" + this.pais.getSelectedItem().toString());
 	}
 	
 	private void cargarProvincias() {

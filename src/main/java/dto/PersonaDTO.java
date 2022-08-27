@@ -13,6 +13,8 @@ public class PersonaDTO
 	private String cumpleanios;
 	private int tipoContactoId;
     private String tipoContacto;
+    private int preferenciaContactoId;
+    private String preferenciaContacto;
     private String idLocalidad;
     private String Localidad;
     private String provincia;
@@ -24,6 +26,22 @@ public class PersonaDTO
 
 	public void setTipoContacto(String tipoContacto) {
 		this.tipoContacto = tipoContacto;
+	}
+	
+	public int getPreferenciaContactoId() {
+		return preferenciaContactoId;
+	}
+
+	public void setPreferenciaContactoId(int preferenciaContactoId) {
+		this.preferenciaContactoId = preferenciaContactoId;
+	}
+
+	public String getPreferenciaContacto() {
+		return preferenciaContacto;
+	}
+
+	public void setPreferenciaContacto(String preferenciaContacto) {
+		this.preferenciaContacto = preferenciaContacto;
 	}
 
 	public String getLocalidad() {

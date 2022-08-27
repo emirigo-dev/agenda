@@ -46,9 +46,11 @@ CREATE TABLE PERSONAS
   email varchar(255),
   cumpleanios date,
   idTipoContacto int(11),
+  idPreferenciaContacto int(11),
   idLocalidad varchar(11),
   PRIMARY KEY (idPersona),
   FOREIGN KEY (IdTipoContacto) REFERENCES TIPO_CONTACTO(idTipoContacto),
+  FOREIGN KEY (idPreferenciaContacto) REFERENCES PREFERENCIA_CONTACTO(idPreferenciaContacto),
   FOREIGN KEY (idLocalidad) REFERENCES LOCALIDAD(idLocalidad)
 );
 

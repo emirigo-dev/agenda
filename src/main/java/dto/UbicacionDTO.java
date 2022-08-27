@@ -20,11 +20,7 @@ public class UbicacionDTO {
 	private HashMap <String, PaisDTO> paisByName = new HashMap <String, PaisDTO>();
 	private List<PaisDTO> paises = new ArrayList<PaisDTO>();
 	
-	public UbicacionDTO () {} 
-
-	
-
-
+	public UbicacionDTO () {}
 	
 	public LocalidadDTO getLocalidad(String idLocalidad) {
 		LocalidadDTO ret = null;
