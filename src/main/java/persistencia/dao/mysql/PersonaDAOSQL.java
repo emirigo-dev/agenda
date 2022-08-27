@@ -13,10 +13,10 @@ import dto.PersonaDTO;
 
 public class PersonaDAOSQL implements PersonaDAO
 {
-	private static final String insert = "INSERT INTO personas(nombre, telefono, idTipoContacto, idLocalidad, Calle, altura, piso, dpto, email, cumpleanios) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-	private static final String edit = "UPDATE PERSONAS SET Nombre = ?, Telefono = ?, Calle = ?, altura = ?, piso = ?, dpto = ?, email = ?, cumpleanios = ?, idTipoContacto = ?, idLocalidad = ? WHERE idPersona = ?";
+	private static final String insert = "INSERT INTO personas(nombre, telefono, idTipoContacto, idLocalidad, Calle, altura, piso, dpto, email, cumpleanios, idPreferenciaContacto) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+	private static final String edit = "UPDATE PERSONAS SET Nombre = ?, Telefono = ?, Calle = ?, altura = ?, piso = ?, dpto = ?, email = ?, cumpleanios = ?, idTipoContacto = ?, idLocalidad = ?, idPreferenciaContacto = ? WHERE idPersona = ?";
 	private static final String delete = "DELETE FROM personas WHERE idPersona = ?";
-	private static final String readall = "SELECT * FROM Personas p LEFT JOIN TIPO_CONTACTO t ON p.idTipoContacto = t.idTipoContacto LEFT JOIN LOCALIDAD l ON p.idLocalidad = l.idLocalidad LEFT JOIN PROVINCIA pr ON pr.idProvincia = l.idProvincia LEFT JOIN Pais pa ON pa.idPais = pr.idPais";
+	private static final String readall = "SELECT * FROM Personas p LEFT JOIN TIPO_CONTACTO t ON p.idTipoContacto = t.idTipoContacto LEFT JOIN PREFERENCIA_CONTACTO pc ON p.idPreferenciaContacto = pc.idPreferenciaContacto LEFT JOIN LOCALIDAD l ON p.idLocalidad = l.idLocalidad LEFT JOIN PROVINCIA pr ON pr.idProvincia = l.idProvincia LEFT JOIN Pais pa ON pa.idPais = pr.idPais";
 	public boolean insert(PersonaDTO persona)
 	{
 
@@ -36,6 +36,8 @@ public class PersonaDAOSQL implements PersonaDAO
 			statement.setString(8, persona.getDpto());
 			statement.setString(9, persona.getEmail());
 			statement.setString(10, persona.getCumpleanios());
+			//statement.setInt(11, persona.getPreferenciaContactoId());
+			statement.setInt(11, 1);
 			
 			if(statement.executeUpdate() > 0)
 			{
@@ -74,7 +76,8 @@ public class PersonaDAOSQL implements PersonaDAO
 			statement.setString(8, persona.getCumpleanios());
 			statement.setInt(9, persona.getTipoContactoId());
 			statement.setString(10, persona.getIdLocalidad());
-			statement.setInt(11, persona.getIdPersona());
+			statement.setInt(11, persona.getPreferenciaContactoId());
+			statement.setInt(12, persona.getIdPersona());
 			
 			if(statement.executeUpdate() > 0)
 			{
@@ -153,8 +156,10 @@ public class PersonaDAOSQL implements PersonaDAO
 		persona.setEmail(resultSet.getString("email"));
 		persona.setIdLocalidad(resultSet.getString("idLocalidad"));
 		persona.setTipoContactoId(resultSet.getInt("idTipoContacto"));
+		persona.setPreferenciaContactoId(resultSet.getInt("idPreferenciaContacto"));
 		persona.setCumpleanios(resultSet.getString("cumpleanios"));
 		persona.setTipoContacto(resultSet.getString("Tipo"));
+		persona.setPreferenciaContacto(resultSet.getString("preferenciaContacto"));
 		persona.setLocalidad(resultSet.getString("localidad"));
 		persona.setProvincia(resultSet.getString("provincia"));
 		persona.setPais(resultSet.getString("pais"));

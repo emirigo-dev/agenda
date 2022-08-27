@@ -27,21 +27,30 @@ CREATE TABLE TIPO_CONTACTO
   PRIMARY KEY (`idTipoContacto`)
 );
 
+CREATE TABLE PREFERENCIA_CONTACTO
+(
+  idPreferenciaContacto int(11) NOT NULL AUTO_INCREMENT,
+  preferenciaContacto varchar(32) NOT NULL,
+  PRIMARY KEY (`idPreferenciaContacto`)
+);
+
 CREATE TABLE PERSONAS
 (
   idPersona int(11) NOT NULL AUTO_INCREMENT,
-  Nombre varchar(45) NOT NULL,
+  Nombre varchar(255) NOT NULL,
   Telefono varchar(20) NOT NULL,
   Calle varchar(20),
   altura varchar(20),
   piso varchar(20),
   dpto varchar(20),
-  email varchar(20),
+  email varchar(255),
   cumpleanios date,
   idTipoContacto int(11),
+  idPreferenciaContacto int(11),
   idLocalidad varchar(11),
   PRIMARY KEY (idPersona),
   FOREIGN KEY (IdTipoContacto) REFERENCES TIPO_CONTACTO(idTipoContacto),
+  FOREIGN KEY (idPreferenciaContacto) REFERENCES PREFERENCIA_CONTACTO(idPreferenciaContacto),
   FOREIGN KEY (idLocalidad) REFERENCES LOCALIDAD(idLocalidad)
 );
 
@@ -62,3 +71,10 @@ INSERT INTO TIPO_CONTACTO (Tipo) VALUES ('Familia');
 INSERT INTO TIPO_CONTACTO (Tipo) VALUES ('Trabajo');
 INSERT INTO TIPO_CONTACTO (Tipo) VALUES ('Amigo');
 INSERT INTO TIPO_CONTACTO (Tipo) VALUES ('Otro');
+
+INSERT INTO PREFERENCIA_CONTACTO (preferenciaContacto) VALUES ('Llamada');
+INSERT INTO PREFERENCIA_CONTACTO (preferenciaContacto) VALUES ('WhatsApp');
+INSERT INTO PREFERENCIA_CONTACTO (preferenciaContacto) VALUES ('SMS');
+INSERT INTO PREFERENCIA_CONTACTO (preferenciaContacto) VALUES ('Email');
+INSERT INTO PREFERENCIA_CONTACTO (preferenciaContacto) VALUES ('Red social');
+INSERT INTO PREFERENCIA_CONTACTO (preferenciaContacto) VALUES ('Otros');

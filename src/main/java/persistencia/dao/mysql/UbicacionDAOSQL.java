@@ -62,8 +62,6 @@ public class UbicacionDAOSQL implements UbicacionDAO {
 		return ubicacion; 
 	}
 	
-
-	
 	private UbicacionDTO getUbicacionProvincias(UbicacionDTO ubicacion, ResultSet resultSet) throws SQLException
 	{
 		ubicacion.setProvinciaByIdPais(resultSet.getString("idPais"), resultSet.getString("idProvincia"), resultSet.getString("provincia"));
