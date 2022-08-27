@@ -5,11 +5,13 @@ import java.util.List;
 
 import dto.LocalidadDTO;
 import dto.PersonaDTO;
+import dto.PreferenciaContactoDTO;
 import dto.TipoContactoDTO;
 import dto.UbicacionDTO;
 import persistencia.dao.interfaz.DAOAbstractFactory;
 import persistencia.dao.interfaz.LocalidadDAO;
 import persistencia.dao.interfaz.PersonaDAO;
+import persistencia.dao.interfaz.PreferenciaContactoDAO;
 import persistencia.dao.interfaz.TipoContactoDAO;
 import persistencia.dao.interfaz.UbicacionDAO;
 
@@ -18,6 +20,7 @@ public class Agenda
 {
 	private PersonaDAO persona;	
 	private TipoContactoDAO tipoContacto;
+	private PreferenciaContactoDAO preferenciaContacto;
 	private LocalidadDAO localidad;
 	private UbicacionDAO ubicacion;
 	
@@ -25,6 +28,7 @@ public class Agenda
 	{
 		this.persona = metodo_persistencia.createPersonaDAO();
 		this.tipoContacto = metodo_persistencia.createTipoContactoDAO();
+		this.preferenciaContacto = metodo_persistencia.createPreferenciaContactoDAO();
 		this.localidad = metodo_persistencia.createLocalidadDAO();
 		this.ubicacion = metodo_persistencia.createUbicacionDAO();
 	}
@@ -52,6 +56,11 @@ public class Agenda
 	public HashMap<String, TipoContactoDTO> obtenerTipoContacto()
 	{
 		return this.tipoContacto.readAll();	
+	}
+	
+	public HashMap<String, PreferenciaContactoDTO> obtenerPreferenciaContacto()
+	{
+		return this.preferenciaContacto.readAll();	
 	}
 	
 	public HashMap<String, LocalidadDTO> obtenerLocalidades()

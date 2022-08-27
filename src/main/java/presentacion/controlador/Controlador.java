@@ -15,6 +15,7 @@ import presentacion.vista.Vista;
 import dto.LocalidadDTO;
 import dto.PaisDTO;
 import dto.PersonaDTO;
+import dto.PreferenciaContactoDTO;
 import dto.ProvinciaDTO;
 import dto.TipoContactoDTO;
 import dto.UbicacionDTO;
@@ -24,6 +25,7 @@ public class Controlador implements ActionListener
 		private Vista vista;
 		private List<PersonaDTO> personasEnTabla;
 		private HashMap<String, TipoContactoDTO> tipoDeContactoByName;
+		private HashMap<String, PreferenciaContactoDTO> preferenciaContactoByName;
 		private HashMap<String, LocalidadDTO> localidadByName;
 		private HashMap<String, ProvinciaDTO> provinciaById;
 		private HashMap<String, PaisDTO> paisById;
@@ -151,6 +153,7 @@ public class Controlador implements ActionListener
 		{
 			this.personasEnTabla = agenda.obtenerPersonas();
 			this.tipoDeContactoByName = agenda.obtenerTipoContacto();
+			this.preferenciaContactoByName = agenda.obtenerPreferenciaContacto();
 			this.ubicacion = agenda.obtenerUbicaciones();
 			this.localidadByName = agenda.obtenerLocalidades();
 			this.ventanaPersona.llenarTipoContacto(this.tipoDeContactoByName);
