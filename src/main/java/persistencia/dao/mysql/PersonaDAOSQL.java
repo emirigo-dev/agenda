@@ -36,8 +36,7 @@ public class PersonaDAOSQL implements PersonaDAO
 			statement.setString(8, persona.getDpto());
 			statement.setString(9, persona.getEmail());
 			statement.setString(10, persona.getCumpleanios());
-			//statement.setInt(11, persona.getPreferenciaContactoId());
-			statement.setInt(11, 1);
+			statement.setInt(11, persona.getPreferenciaContactoId());
 			
 			if(statement.executeUpdate() > 0)
 			{
