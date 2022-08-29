@@ -47,8 +47,8 @@ public class Controlador implements ActionListener
 			this.ventanaPersona = VentanaPersona.getInstance(this.agenda.obtenerTipoContacto(), this.agenda.obtenerPreferenciaContacto(), this.agenda.obtenerUbicaciones());		
 			this.ventanaPersona.getBtnAgregarPersona().addActionListener(p->guardarPersona(p));
 			this.selectorReporte = SelectorReporte.getInstance();
-			this.selectorReporte.getBtnReportePreferenciaContacto().addActionListener(r->mostrarReporte(r));
-			this.selectorReporte.getBtnReporteUbicacion().addActionListener(k->mostrarReporte(k));
+			this.selectorReporte.getBtnReportePreferenciaContacto().addActionListener(r->mostrarReportePreferenciaContacto(r));
+			this.selectorReporte.getBtnReporteUbicacion().addActionListener(k->mostrarReporteUbicacion(k));
 		}
 		
 		private void ventanaAgregarPersona(ActionEvent a) {
@@ -140,8 +140,14 @@ public class Controlador implements ActionListener
 			this.ventanaPersonaEditar.cerrar();
 		}
 
-		private void mostrarReporte(ActionEvent r) {
-			ReporteAgenda reporte = new ReporteAgenda(agenda.obtenerPersonas(), agenda.obtenerPreferenciaContacto().keySet());
+		private void mostrarReportePreferenciaContacto(ActionEvent r) {
+			ReporteAgenda reporte = new ReporteAgenda(this.agenda.obtenerPreferenciaContactoContador(), "ReporteAgenda.jasper");
+			reporte.mostrar();	
+			this.selectorReporte.ocultarVentana();
+		}
+		
+		private void mostrarReporteUbicacion(ActionEvent r) {
+			ReporteAgenda reporte = new ReporteAgenda(this.agenda.obtenerUbicacion(), "ReporteUbicacion.jasper");
 			reporte.mostrar();	
 			this.selectorReporte.ocultarVentana();
 		}
