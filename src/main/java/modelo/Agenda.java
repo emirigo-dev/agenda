@@ -1,5 +1,6 @@
 package modelo;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -62,6 +63,17 @@ public class Agenda
 	{
 		return this.preferenciaContacto.readAll();	
 	}
+	
+	public ArrayList<PersonaDTO> obtenerPreferenciaContactoContador()
+	{
+		return this.persona.readAllJasperContactoPrefencia();
+	}
+	
+	public ArrayList<PersonaDTO> obtenerUbicacion()
+	{
+		return this.persona.readAllJasperUbicacion();
+	}
+	
 	
 	public HashMap<String, LocalidadDTO> obtenerLocalidades()
 	{

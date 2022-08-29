@@ -10,6 +10,7 @@ import java.util.List;
 
 import modelo.Agenda;
 import presentacion.reportes.ReporteAgenda;
+import presentacion.vista.SelectorReporte;
 import presentacion.vista.VentanaPersona;
 import presentacion.vista.Vista;
 import dto.LocalidadDTO;
@@ -32,6 +33,7 @@ public class Controlador implements ActionListener
 		private UbicacionDTO ubicacion;
 		private VentanaPersona ventanaPersona;
 		private VentanaPersona ventanaPersonaEditar;
+		private SelectorReporte selectorReporte;
 		private Agenda agenda;
 		
 		public Controlador(Vista vista, Agenda agenda)
@@ -40,14 +42,21 @@ public class Controlador implements ActionListener
 			this.vista.getBtnAgregar().addActionListener(a->ventanaAgregarPersona(a));
 			this.vista.getBtnEditar().addActionListener(b->ventanaEditarPersona(b));
 			this.vista.getBtnBorrar().addActionListener(s->borrarPersona(s));
-			this.vista.getBtnReporte().addActionListener(r->mostrarReporte(r));
+			this.vista.getBtnReporte().addActionListener(j->ventanaSelectorReporte(j));
 			this.agenda = agenda;
 			this.ventanaPersona = VentanaPersona.getInstance(this.agenda.obtenerTipoContacto(), this.agenda.obtenerPreferenciaContacto(), this.agenda.obtenerUbicaciones());		
 			this.ventanaPersona.getBtnAgregarPersona().addActionListener(p->guardarPersona(p));
+			this.selectorReporte = SelectorReporte.getInstance();
+			this.selectorReporte.getBtnReportePreferenciaContacto().addActionListener(r->mostrarReportePreferenciaContacto(r));
+			this.selectorReporte.getBtnReporteUbicacion().addActionListener(k->mostrarReporteUbicacion(k));
 		}
 		
 		private void ventanaAgregarPersona(ActionEvent a) {
 			this.ventanaPersona.mostrarVentana();
+		}
+		
+		private void ventanaSelectorReporte (ActionEvent j) {
+			this.selectorReporte.mostrarVentana();
 		}
 		
 		private void ventanaEditarPersona(ActionEvent b) {
@@ -70,6 +79,7 @@ public class Controlador implements ActionListener
 			String nombre = this.ventanaPersona.getTxtNombre().getText();
 			String tel = ventanaPersona.getTxtTelefono().getText();
 			String tipoContacto = this.ventanaPersona.getContactTypeName();
+			String preferenciaContacto = this.ventanaPersona.getPrefereceContactName();
 			String localidadPersona = this.ventanaPersona.getLocalidadName();
 			String callePersona = this.ventanaPersona.getCalle().getText();
 			String alturaCalle = this.ventanaPersona.getAltura().getText();
@@ -80,6 +90,7 @@ public class Controlador implements ActionListener
 			SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
 			PersonaDTO nuevaPersona = new PersonaDTO(0, nombre, tel);
 			nuevaPersona.setTipoContactoId(tipoDeContactoByName.get(tipoContacto).getIdTipoContacto());
+			nuevaPersona.setPreferenciaContactoId(preferenciaContactoByName.get(preferenciaContacto).getIdPreferenciaContacto());
 			nuevaPersona.setLocalidad(localidadByName.get(localidadPersona).getLocalidad());
 			nuevaPersona.setIdLocalidad(localidadByName.get(localidadPersona).getIdLocalidad());
 			nuevaPersona.setCalle(callePersona);
@@ -100,6 +111,7 @@ public class Controlador implements ActionListener
 			String nombre = this.ventanaPersonaEditar.getTxtNombre().getText();
 			String tel = ventanaPersonaEditar.getTxtTelefono().getText();
 			String tipoContacto = this.ventanaPersonaEditar.getContactTypeName();
+			String preferenciaContacto = this.ventanaPersona.getPrefereceContactName();
 			String localidadPersona = this.ventanaPersonaEditar.getLocalidadName();
 			String callePersona = this.ventanaPersonaEditar.getCalle().getText();
 			String alturaCalle = this.ventanaPersonaEditar.getAltura().getText();
@@ -110,6 +122,7 @@ public class Controlador implements ActionListener
 			SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
 			PersonaDTO nuevaPersona = new PersonaDTO(0, nombre, tel);
 			nuevaPersona.setTipoContactoId(tipoDeContactoByName.get(tipoContacto).getIdTipoContacto());
+			nuevaPersona.setPreferenciaContactoId(preferenciaContactoByName.get(preferenciaContacto).getIdPreferenciaContacto());
 			nuevaPersona.setLocalidad(localidadByName.get(localidadPersona).getLocalidad());
 			nuevaPersona.setIdLocalidad(localidadByName.get(localidadPersona).getIdLocalidad());
 			nuevaPersona.setCalle(callePersona);
@@ -127,9 +140,16 @@ public class Controlador implements ActionListener
 			this.ventanaPersonaEditar.cerrar();
 		}
 
-		private void mostrarReporte(ActionEvent r) {
-			ReporteAgenda reporte = new ReporteAgenda(agenda.obtenerPersonas());
+		private void mostrarReportePreferenciaContacto(ActionEvent r) {
+			ReporteAgenda reporte = new ReporteAgenda(this.agenda.obtenerPreferenciaContactoContador(), "ReporteAgenda.jasper");
 			reporte.mostrar();	
+			this.selectorReporte.ocultarVentana();
+		}
+		
+		private void mostrarReporteUbicacion(ActionEvent r) {
+			ReporteAgenda reporte = new ReporteAgenda(this.agenda.obtenerUbicacion(), "ReporteUbicacion.jasper");
+			reporte.mostrar();	
+			this.selectorReporte.ocultarVentana();
 		}
 
 		public void borrarPersona(ActionEvent s)
