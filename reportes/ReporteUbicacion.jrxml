@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.20.0.final using JasperReports Library version 6.20.0-2bc7ab61c56f459e8176eb05c7705e145cd400ad  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ReporteUbicacion" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="c799cc9f-5077-490a-9f75-db55c63c00b9">
+	<property name="net.sf.jasperreports.chart.pie.ignore.duplicated.key" value="true"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Conector agenda"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<queryString>
+		<![CDATA[SELECT idPersona, Telefono, nombre, pa.pais, pr.provincia, l.localidad, totalLocalidad, totalProvincia, totalPais
+FROM Personas P 
+LEFT JOIN TIPO_CONTACTO T ON p.idTipoContacto = t.idTipoContacto 
+LEFT JOIN LOCALIDAD L ON p.idLocalidad = l.idLocalidad 
+LEFT JOIN PROVINCIA pr ON pr.idProvincia = l.idProvincia 
+LEFT JOIN Pais pa ON pa.idPais = pr.idPais
+INNER JOIN (select L_2.idLocalidad, count(distinct P_2.idPersona) * 100.0 / sum(count(P_2.idPersona)) over() as TotalLocalidad from personas as P_2 left join localidad as L_2 on P_2.idLocalidad = L_2.idLocalidad group by L_2.idLocalidad) as sq
+ON L.idLocalidad = sq.idLocalidad
+INNER JOIN (
+    SELECT Prov_2.idProvincia, count(distinct Loc_2.idPersona) * 100.0 / sum(count(Loc_2.idPersona)) over() as TotalProvincia 
+    FROM personas as Loc_2 
+    LEFT JOIN localidad as s
+    ON Loc_2.idLocalidad = s.idLocalidad
+    LEFT JOIN provincia as Prov_2 ON s.idProvincia = Prov_2.idProvincia 
+    GROUP BY Prov_2.idProvincia) as sqProv
+ON pr.idProvincia = sqProv.idProvincia
+INNER JOIN (
+    SELECT paisQ.idPais, count(distinct personaPais.idPersona) * 100.0 / sum(count(personaPais.idPersona)) over() as TotalPais 
+    FROM personas as personaPais 
+    LEFT JOIN localidad as locPais
+    ON personaPais.idLocalidad = locPais.idLocalidad
+    LEFT JOIN provincia as ProvPais 
+    ON locPais.idProvincia = ProvPais.idProvincia 
+    LEFT JOIN Pais as paisQ
+    ON ProvPais.idPais = paisQ.idPais
+    GROUP BY  paisQ.idPais) as sqPais
+ON pa.idPais = sqPais.idPais
+ORDER BY pa.pais, pr.provincia, L.localidad]]>
+	</queryString>
+	<field name="nombre" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="Nombre"/>
+		<property name="com.jaspersoft.studio.field.label" value="nombre"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="personas"/>
+	</field>
+	<field name="pais" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="pais"/>
+		<property name="com.jaspersoft.studio.field.label" value="pais"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="pais"/>
+	</field>
+	<field name="provincia" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="provincia"/>
+		<property name="com.jaspersoft.studio.field.label" value="provincia"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="provincia"/>
+	</field>
+	<field name="localidad" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="localidad"/>
+		<property name="com.jaspersoft.studio.field.label" value="localidad"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="localidad"/>
+	</field>
+	<field name="totalLocalidad" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.name" value="TotalLocalidad"/>
+		<property name="com.jaspersoft.studio.field.label" value="TotalLocalidad"/>
+	</field>
+	<field name="totalProvincia" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.name" value="TotalProvincia"/>
+		<property name="com.jaspersoft.studio.field.label" value="TotalProvincia"/>
+	</field>
+	<field name="totalPais" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.name" value="TotalPais"/>
+		<property name="com.jaspersoft.studio.field.label" value="TotalPais"/>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="45" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="9" width="560" height="30" uuid="bcee7d20-3e34-4848-805f-431fa5f6335a"/>
+				<textElement textAlignment="Center">
+					<font size="18"/>
+				</textElement>
+				<text><![CDATA[Reporte de ubicaciones]]></text>
+			</staticText>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="64" splitType="Stretch">
+			<staticText>
+				<reportElement x="10" y="16" width="150" height="30" uuid="37bfd1f1-3fe2-432c-9b69-4e93c74824ea"/>
+				<textElement>
+					<font size="14"/>
+				</textElement>
+				<text><![CDATA[Nombre y apellido]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="180" y="16" width="100" height="30" uuid="5cb92f45-ce52-4f16-8abf-7f44d084a29a"/>
+				<textElement>
+					<font size="14"/>
+				</textElement>
+				<text><![CDATA[País]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="300" y="16" width="100" height="30" uuid="ca1d4b5d-74df-4438-9540-2d3375b8bd4c"/>
+				<textElement>
+					<font size="14"/>
+				</textElement>
+				<text><![CDATA[Provincia]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="430" y="17" width="100" height="30" uuid="c13af1c7-a363-4d14-82da-59790b42b982"/>
+				<textElement>
+					<font size="14"/>
+				</textElement>
+				<text><![CDATA[Localidad
+]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="50" splitType="Stretch">
+			<textField>
+				<reportElement x="10" y="12" width="100" height="30" uuid="61e37592-94cc-4939-bda4-424d016422a6"/>
+				<textFieldExpression><![CDATA[$F{nombre}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="180" y="12" width="100" height="30" uuid="24fb2d84-d3a6-4fc3-b07d-a6ba20cdb0ac"/>
+				<textFieldExpression><![CDATA[$F{pais}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="300" y="12" width="100" height="30" uuid="a998b6ed-d694-477e-805a-da477f06735d"/>
+				<textFieldExpression><![CDATA[$F{provincia}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="430" y="10" width="100" height="30" uuid="42a2ba6d-bfd6-4baa-8bc1-095722357fa1"/>
+				<textFieldExpression><![CDATA[$F{localidad}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<summary>
+		<band height="760" splitType="Stretch">
+			<pieChart>
+				<chart evaluationTime="Report">
+					<reportElement x="0" y="290" width="560" height="200" uuid="1abd20aa-2ce5-431d-be49-5453299fb9bb"/>
+					<chartTitle/>
+					<chartSubtitle/>
+					<chartLegend/>
+				</chart>
+				<pieDataset>
+					<dataset resetType="Report"/>
+					<keyExpression><![CDATA[$F{provincia}]]></keyExpression>
+					<valueExpression><![CDATA[$F{totalProvincia}]]></valueExpression>
+					<labelExpression><![CDATA[new DecimalFormat("#,##0.00").format($F{totalProvincia})+ " %"
+]]></labelExpression>
+				</pieDataset>
+				<piePlot>
+					<plot/>
+					<itemLabel/>
+				</piePlot>
+			</pieChart>
+			<staticText>
+				<reportElement x="0" y="9" width="560" height="30" uuid="4b9bdc3b-a8ae-45cd-b957-e90b7f83dbe2"/>
+				<textElement textAlignment="Center">
+					<font size="18"/>
+				</textElement>
+				<text><![CDATA[Gráfico paises]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="-5" y="252" width="560" height="30" uuid="e1436f04-f497-4c68-b418-176d7f2169f0"/>
+				<textElement textAlignment="Center">
+					<font size="18"/>
+				</textElement>
+				<text><![CDATA[Gráfico provincias]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="-10" y="510" width="560" height="38" uuid="90270776-a12c-44a1-b6a7-3218c2163b9c"/>
+				<textElement textAlignment="Center">
+					<font size="18"/>
+				</textElement>
+				<text><![CDATA[Gráfico localidades]]></text>
+			</staticText>
+			<pieChart>
+				<chart evaluationTime="Report">
+					<reportElement x="0" y="50" width="560" height="200" uuid="f5506515-d7c6-4912-ab58-a3a75e80b510"/>
+					<chartTitle/>
+					<chartSubtitle/>
+					<chartLegend/>
+				</chart>
+				<pieDataset>
+					<dataset resetType="Report"/>
+					<keyExpression><![CDATA[$F{pais}]]></keyExpression>
+					<valueExpression><![CDATA[$F{totalPais}]]></valueExpression>
+					<labelExpression><![CDATA[new DecimalFormat("#,##0.00").format($F{totalPais})+ " %"
+]]></labelExpression>
+				</pieDataset>
+				<piePlot>
+					<plot/>
+					<itemLabel/>
+				</piePlot>
+			</pieChart>
+			<pieChart>
+				<chart evaluationTime="Report">
+					<reportElement x="0" y="548" width="571" height="200" uuid="97e175a8-c33b-4fb8-96f9-c74c19a7ab54"/>
+					<chartTitle/>
+					<chartSubtitle/>
+					<chartLegend/>
+				</chart>
+				<pieDataset>
+					<dataset resetType="Report"/>
+					<keyExpression><![CDATA[$F{localidad}]]></keyExpression>
+					<valueExpression><![CDATA[$F{totalLocalidad}]]></valueExpression>
+					<labelExpression><![CDATA[new DecimalFormat("#,##0.00").format($F{totalLocalidad})+ " %"
+]]></labelExpression>
+				</pieDataset>
+				<piePlot>
+					<plot/>
+					<itemLabel/>
+				</piePlot>
+			</pieChart>
+		</band>
+	</summary>
+</jasperReport>

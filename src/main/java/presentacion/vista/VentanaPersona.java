@@ -416,7 +416,10 @@ public class VentanaPersona extends JFrame
 	
 	public String getContactTypeName() {
 		return tipoContactoComboBox.getSelectedItem().toString();
-
+	}
+	
+	public String getPrefereceContactName() {
+		return preferenciaContactoComboBox.getSelectedItem().toString();
 	}
 
 	public JButton getBtnAgregarPersona() 
