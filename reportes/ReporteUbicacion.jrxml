@@ -116,7 +116,7 @@ ORDER BY pa.pais, pr.provincia, L.localidad]]>
 	<detail>
 		<band height="50" splitType="Stretch">
 			<textField>
-				<reportElement x="10" y="12" width="100" height="30" uuid="61e37592-94cc-4939-bda4-424d016422a6"/>
+				<reportElement x="10" y="12" width="150" height="30" uuid="61e37592-94cc-4939-bda4-424d016422a6"/>
 				<textFieldExpression><![CDATA[$F{nombre}]]></textFieldExpression>
 			</textField>
 			<textField>

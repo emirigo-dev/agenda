@@ -71,11 +71,11 @@ ORDER BY rf.preferenciaContacto, nombre ]]>
 	<detail>
 		<band height="31" splitType="Stretch">
 			<textField>
-				<reportElement x="20" y="0" width="70" height="30" uuid="a4fd9b00-cf8a-4ead-abcf-d38a05948748"/>
+				<reportElement x="20" y="0" width="150" height="30" uuid="a4fd9b00-cf8a-4ead-abcf-d38a05948748"/>
 				<textFieldExpression><![CDATA[$F{nombre}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="410" y="0" width="70" height="30" uuid="df59eaea-cb9e-4e03-a8aa-1dbd15a9efd1"/>
+				<reportElement x="360" y="0" width="192" height="30" uuid="df59eaea-cb9e-4e03-a8aa-1dbd15a9efd1"/>
 				<textFieldExpression><![CDATA[$F{preferenciaContacto}]]></textFieldExpression>
 			</textField>
 		</band>
@@ -84,7 +84,7 @@ ORDER BY rf.preferenciaContacto, nombre ]]>
 		<band height="280">
 			<pieChart>
 				<chart evaluationTime="Report">
-					<reportElement x="-20" y="60" width="595" height="200" uuid="258d7ee6-6849-4ff5-8940-540613e44827"/>
+					<reportElement x="-20" y="60" width="595" height="200" uuid="f497bde3-fc32-43b3-b339-32efbd2f2c58"/>
 					<chartTitle/>
 					<chartSubtitle/>
 					<chartLegend/>
