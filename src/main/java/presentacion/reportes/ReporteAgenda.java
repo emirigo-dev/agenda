@@ -18,6 +18,7 @@ import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.engine.util.JRLoader;
 import net.sf.jasperreports.view.JasperViewer;
+import persistencia.conexion.Conexion;
 import dto.PersonaDTO;
 import dto.PreferenciaContactoDTO;
 
@@ -28,7 +29,7 @@ public class ReporteAgenda
 	private JasperPrint	reporteLleno;
 	private Logger log = Logger.getLogger(ReporteAgenda.class);
 	//Recibe la lista de personas para armar el reporte
-    public ReporteAgenda(List<PersonaDTO> prefContacts, String reportName)
+    public ReporteAgenda(String reportName)
     {
     	
 		Map<String, Object> parametersMap = new HashMap<String, Object>();
@@ -36,7 +37,7 @@ public class ReporteAgenda
     	try		{
 			this.reporte = (JasperReport) JRLoader.loadObjectFromFile( "reportes" + File.separator + reportName );
 			this.reporteLleno = JasperFillManager.fillReport(this.reporte, parametersMap, 
-					new JRBeanCollectionDataSource(prefContacts));
+					Conexion.getConexion().getSQLConexion());
     		log.info("Se cargó correctamente el reporte");
 		}
 		catch( JRException ex ) 

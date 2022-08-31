@@ -64,17 +64,7 @@ public class Agenda
 		return this.preferenciaContacto.readAll();	
 	}
 	
-	public ArrayList<PersonaDTO> obtenerPreferenciaContactoContador()
-	{
-		return this.persona.readAllJasperContactoPrefencia();
-	}
-	
-	public ArrayList<PersonaDTO> obtenerUbicacion()
-	{
-		return this.persona.readAllJasperUbicacion();
-	}
-	
-	
+
 	public HashMap<String, LocalidadDTO> obtenerLocalidades()
 	{
 		return this.localidad.readAll();	

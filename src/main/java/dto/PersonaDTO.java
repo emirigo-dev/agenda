@@ -19,43 +19,7 @@ public class PersonaDTO
     private String Localidad;
     private String provincia;
 	private String pais;
-	private Double total;
-	private Double totalProvincia;
-	private Double totalLocalidad;
-	private Double totalPais;
 
-
-	public Double getTotalProvincia() {
-		return totalProvincia;
-	}
-
-	public void setTotalProvincia(Double totalProvincia) {
-		this.totalProvincia = totalProvincia;
-	}
-
-	public Double getTotalLocalidad() {
-		return totalLocalidad;
-	}
-
-	public void setTotalLocalidad(Double totalLocalidad) {
-		this.totalLocalidad = totalLocalidad;
-	}
-
-	public Double getTotalPais() {
-		return totalPais;
-	}
-
-	public void setTotalPais(Double totalPais) {
-		this.totalPais = totalPais;
-	}
-
-	public Double getTotal() {
-		return total;
-	}
-
-	public void setTotal(Double total) {
-		this.total = total;
-	}
 
 	public String getTipoContacto() {
 		return tipoContacto;

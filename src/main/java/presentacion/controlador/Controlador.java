@@ -141,13 +141,13 @@ public class Controlador implements ActionListener
 		}
 
 		private void mostrarReportePreferenciaContacto(ActionEvent r) {
-			ReporteAgenda reporte = new ReporteAgenda(this.agenda.obtenerPreferenciaContactoContador(), "ReporteAgenda.jasper");
+			ReporteAgenda reporte = new ReporteAgenda("ReporteAgenda.jasper");
 			reporte.mostrar();	
 			this.selectorReporte.ocultarVentana();
 		}
 		
 		private void mostrarReporteUbicacion(ActionEvent r) {
-			ReporteAgenda reporte = new ReporteAgenda(this.agenda.obtenerUbicacion(), "ReporteUbicacion.jasper");
+			ReporteAgenda reporte = new ReporteAgenda("ReporteUbicacion.jasper");
 			reporte.mostrar();	
 			this.selectorReporte.ocultarVentana();
 		}
