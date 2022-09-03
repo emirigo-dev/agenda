@@ -9,21 +9,13 @@ public class Conexion
 {
 	public static Conexion instancia;
 	private Connection connection;
-	private Logger log = Logger.getLogger(Conexion.class);	
+	private Logger log = Logger.getLogger(Conexion.class);
+	private String user = "root";
+	private String password = "root";
 	
 	private Conexion()
 	{
-		try
-		{
-			Class.forName("com.mysql.jdbc.Driver"); 
-			this.connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/agenda","root","root");
-			this.connection.setAutoCommit(false);
-			log.info("Conexión exitosa");
-		}
-		catch(Exception e)
-		{
-			log.error("Conexión fallida", e);
-		}
+		this.connection = inicializarConexion("agenda", this.user, this.password);
 	}
 	
 	
@@ -53,5 +45,25 @@ public class Conexion
 			log.error("Error al cerrar la conexión!", e);
 		}
 		instancia = null;
+	}
+	
+	private static Connection inicializarConexion(String bdd, String user, String pass) {
+		Connection cnx = null;
+		try
+		{
+			Class.forName("com.mysql.jdbc.Driver"); 
+			cnx = DriverManager.getConnection("jdbc:mysql://localhost:3306/" + bdd, user, pass);
+			cnx.setAutoCommit(false);
+		}
+		catch(Exception e)
+		{
+			System.out.println(e.getMessage());
+		}
+		
+		return cnx;
+	}
+	
+	public static boolean successConnection(String user, String password) {
+		return inicializarConexion("agenda", user, password) == null ? false : true;
 	}
 }
