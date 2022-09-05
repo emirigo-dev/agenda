@@ -41,6 +41,7 @@ public class Controlador implements ActionListener
 		private VentanaPersona ventanaPersonaEditar;
 		private SelectorReporte selectorReporte;
 		private Agenda agenda;
+		private Conexion conexion;
 		
 		public Controlador()
 		{
@@ -58,6 +59,10 @@ public class Controlador implements ActionListener
 			String pass = this.vistaRegistro.getPassword();
 			
 			if (Conexion.successConnection(user, pass)) {
+				this.conexion = Conexion.getConexion();
+				conexion.setUser(user);
+				conexion.setPassword(pass);
+				
 				this.vistaRegistro.ocultarVista();
 				iniciarAgenda();
 			} else {
@@ -69,7 +74,7 @@ public class Controlador implements ActionListener
 		private void iniciarAgenda () {
 			
 			this.vista = new Vista();
-			this.agenda = new Agenda(new DAOSQLFactory());
+			this.agenda = new Agenda(new DAOSQLFactory(), this.conexion);
 			
 			this.vista.getBtnAgregar().addActionListener(a->ventanaAgregarPersona(a));
 			this.vista.getBtnEditar().addActionListener(b->ventanaEditarPersona(b));
@@ -147,7 +152,7 @@ public class Controlador implements ActionListener
 			String nombre = this.ventanaPersonaEditar.getTxtNombre().getText();
 			String tel = ventanaPersonaEditar.getTxtTelefono().getText();
 			String tipoContacto = this.ventanaPersonaEditar.getContactTypeName();
-			String preferenciaContacto = this.ventanaPersona.getPrefereceContactName();
+			String preferenciaContacto = this.ventanaPersonaEditar.getPrefereceContactName();
 			String localidadPersona = this.ventanaPersonaEditar.getLocalidadName();
 			String callePersona = this.ventanaPersonaEditar.getCalle().getText();
 			String alturaCalle = this.ventanaPersonaEditar.getAltura().getText();
@@ -159,6 +164,8 @@ public class Controlador implements ActionListener
 			PersonaDTO nuevaPersona = new PersonaDTO(0, nombre, tel);
 			nuevaPersona.setTipoContactoId(tipoDeContactoByName.get(tipoContacto).getIdTipoContacto());
 			nuevaPersona.setPreferenciaContactoId(preferenciaContactoByName.get(preferenciaContacto).getIdPreferenciaContacto());
+			System.out.println("PREFERENCIA NAME");
+			System.out.println(preferenciaContacto);
 			nuevaPersona.setLocalidad(localidadByName.get(localidadPersona).getLocalidad());
 			nuevaPersona.setIdLocalidad(localidadByName.get(localidadPersona).getIdLocalidad());
 			nuevaPersona.setCalle(callePersona);
@@ -177,13 +184,13 @@ public class Controlador implements ActionListener
 		}
 
 		private void mostrarReportePreferenciaContacto(ActionEvent r) {
-			ReporteAgenda reporte = new ReporteAgenda("ReporteAgenda.jasper");
+			ReporteAgenda reporte = new ReporteAgenda("ReporteAgenda.jasper", this.conexion);
 			reporte.mostrar();	
 			this.selectorReporte.ocultarVentana();
 		}
 		
 		private void mostrarReporteUbicacion(ActionEvent r) {
-			ReporteAgenda reporte = new ReporteAgenda("ReporteUbicacion.jasper");
+			ReporteAgenda reporte = new ReporteAgenda("ReporteUbicacion.jasper", this.conexion);
 			reporte.mostrar();	
 			this.selectorReporte.ocultarVentana();
 		}

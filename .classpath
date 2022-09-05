@@ -29,7 +29,8 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Program Files (x86)/MySQL/Connector J 8.0/mysql-connector-java-8.0.30.jar"/>
 	<classpathentry kind="lib" path="C:/Users/herediaal/Desktop/jcalendar-1.4.jar"/>
+	<classpathentry kind="lib" path="C:/Users/herediaal/Desktop/mariadb-java-client-3.0.5-sources.jar"/>
+	<classpathentry kind="lib" path="C:/Users/herediaal/Desktop/jasperreports-6.19.1.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

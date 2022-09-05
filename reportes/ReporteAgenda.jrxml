@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.20.0.final using JasperReports Library version 6.20.0-2bc7ab61c56f459e8176eb05c7705e145cd400ad  -->
+<!-- Created with Jaspersoft Studio version 6.19.1.final using JasperReports Library version 6.19.1-867c00bf88cd4d784d404379d6c05e1b419e8a4c  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Blank_A4" pageWidth="595" pageHeight="842" whenNoDataType="NoPages" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" whenResourceMissingType="Empty" uuid="284e0c88-a4b2-4ff8-98a2-d67b80bcffaf">
-	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Conector agenda"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="DB"/>
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<property name="net.sf.jasperreports.chart.pie.ignore.duplicated.key" value="true"/>
 	<parameter name="Fecha" class="java.lang.String"/>
 	<queryString language="SQL">
 		<![CDATA[SELECT idPersona, Nombre, Telefono, total, rf.preferenciaContacto
 FROM Personas P 
-INNER JOIN (select L_2.idPreferenciaContacto, L_2.preferenciaContacto, count(distinct P_2.idPersona) * 100.0 / sum(count( L_2.idPreferenciaContacto)) over() as total from personas as P_2 left join PREFERENCIA_CONTACTO as L_2 on P_2.idPreferenciaContacto = L_2.idPreferenciaContacto group by L_2.idPreferenciaContacto) as rf
+INNER JOIN (select L_2.idPreferenciaContacto, L_2.preferenciaContacto, count(P_2.idPersona) * 100.0 / sum(count( L_2.idPreferenciaContacto)) over() as total from personas as P_2 left join PREFERENCIA_CONTACTO as L_2 on P_2.idPreferenciaContacto = L_2.idPreferenciaContacto group by L_2.idPreferenciaContacto) as rf
 ON P.idPreferenciaContacto = rf.idPreferenciaContacto
-ORDER BY rf.preferenciaContacto, nombre ]]>
+ORDER BY rf.preferenciaContacto, nombre]]>
 	</queryString>
 	<field name="idPersona" class="java.lang.Integer">
 		<property name="com.jaspersoft.studio.field.name" value="idPersona"/>
@@ -93,8 +93,7 @@ ORDER BY rf.preferenciaContacto, nombre ]]>
 					<dataset resetType="Report"/>
 					<keyExpression><![CDATA[$F{preferenciaContacto}]]></keyExpression>
 					<valueExpression><![CDATA[$F{total}]]></valueExpression>
-					<labelExpression><![CDATA[new DecimalFormat("#,##0.00").format($F{total})+ " %"
-]]></labelExpression>
+					<labelExpression><![CDATA[new DecimalFormat("#,##0.00").format($F{total})+ " %"]]></labelExpression>
 				</pieDataset>
 				<piePlot>
 					<plot/>

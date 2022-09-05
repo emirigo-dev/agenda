@@ -443,7 +443,7 @@ public class VentanaPersona extends JFrame
 		this.depto.setText(null);
 		this.fechNacimiento.setDate(null);
 		this.tipoContactoComboBox.setSelectedItem("Amigo");
-		this.preferenciaContactoComboBox.setSelectedItem("Llamada");
+		this.preferenciaContactoComboBox.setSelectedItem("Email");
 		this.pais.setSelectedItem("Argentina");
 		this.provincia.setSelectedItem("Buenos Aires");
 		this.localidad.setSelectedItem("CABA");

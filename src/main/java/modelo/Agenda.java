@@ -9,6 +9,7 @@ import dto.PersonaDTO;
 import dto.PreferenciaContactoDTO;
 import dto.TipoContactoDTO;
 import dto.UbicacionDTO;
+import persistencia.conexion.Conexion;
 import persistencia.dao.interfaz.DAOAbstractFactory;
 import persistencia.dao.interfaz.LocalidadDAO;
 import persistencia.dao.interfaz.PersonaDAO;
@@ -24,14 +25,16 @@ public class Agenda
 	private PreferenciaContactoDAO preferenciaContacto;
 	private LocalidadDAO localidad;
 	private UbicacionDAO ubicacion;
+	private Conexion conexion;
 	
-	public Agenda(DAOAbstractFactory metodo_persistencia)
+	public Agenda(DAOAbstractFactory metodo_persistencia, Conexion conexion)
 	{
 		this.persona = metodo_persistencia.createPersonaDAO();
 		this.tipoContacto = metodo_persistencia.createTipoContactoDAO();
 		this.preferenciaContacto = metodo_persistencia.createPreferenciaContactoDAO();
 		this.localidad = metodo_persistencia.createLocalidadDAO();
 		this.ubicacion = metodo_persistencia.createUbicacionDAO();
+		this.conexion = conexion;
 	}
 	
 	public void agregarPersona(PersonaDTO nuevaPersona)
@@ -56,7 +59,7 @@ public class Agenda
 	
 	public HashMap<String, TipoContactoDTO> obtenerTipoContacto()
 	{
-		return this.tipoContacto.readAll();	
+		return this.tipoContacto.readAll(this.conexion);	
 	}
 	
 	public HashMap<String, PreferenciaContactoDTO> obtenerPreferenciaContacto()

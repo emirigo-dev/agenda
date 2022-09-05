@@ -30,6 +30,10 @@ public class Conexion
 
 	public Connection getSQLConexion() 
 	{
+		if (this.connection == null) {
+			this.connection = inicializarConexion("agenda", this.user, this.password);
+		}
+		
 		return this.connection;
 	}
 	
@@ -63,6 +67,26 @@ public class Conexion
 		return cnx;
 	}
 	
+	public String getUser() {
+		return user;
+	}
+
+
+	public void setUser(String user) {
+		this.user = user;
+	}
+
+
+	public String getPassword() {
+		return password;
+	}
+
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+
 	public static boolean successConnection(String user, String password) {
 		return inicializarConexion("agenda", user, password) == null ? false : true;
 	}

@@ -29,7 +29,7 @@ public class ReporteAgenda
 	private JasperPrint	reporteLleno;
 	private Logger log = Logger.getLogger(ReporteAgenda.class);
 	//Recibe la lista de personas para armar el reporte
-    public ReporteAgenda(String reportName)
+    public ReporteAgenda(String reportName, Conexion conexion)
     {
     	
 		Map<String, Object> parametersMap = new HashMap<String, Object>();
@@ -37,7 +37,7 @@ public class ReporteAgenda
     	try		{
 			this.reporte = (JasperReport) JRLoader.loadObjectFromFile( "reportes" + File.separator + reportName );
 			this.reporteLleno = JasperFillManager.fillReport(this.reporte, parametersMap, 
-					Conexion.getConexion().getSQLConexion());
+					conexion.getSQLConexion());
     		log.info("Se cargó correctamente el reporte");
 		}
 		catch( JRException ex ) 
