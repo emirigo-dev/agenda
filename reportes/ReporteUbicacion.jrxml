@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.20.0.final using JasperReports Library version 6.20.0-2bc7ab61c56f459e8176eb05c7705e145cd400ad  -->
+<!-- Created with Jaspersoft Studio version 6.19.1.final using JasperReports Library version 6.19.1-867c00bf88cd4d784d404379d6c05e1b419e8a4c  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ReporteUbicacion" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="c799cc9f-5077-490a-9f75-db55c63c00b9">
 	<property name="net.sf.jasperreports.chart.pie.ignore.duplicated.key" value="true"/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Conector agenda"/>
@@ -11,10 +11,10 @@ LEFT JOIN TIPO_CONTACTO T ON p.idTipoContacto = t.idTipoContacto
 LEFT JOIN LOCALIDAD L ON p.idLocalidad = l.idLocalidad 
 LEFT JOIN PROVINCIA pr ON pr.idProvincia = l.idProvincia 
 LEFT JOIN Pais pa ON pa.idPais = pr.idPais
-INNER JOIN (select L_2.idLocalidad, count(distinct P_2.idPersona) * 100.0 / sum(count(P_2.idPersona)) over() as TotalLocalidad from personas as P_2 left join localidad as L_2 on P_2.idLocalidad = L_2.idLocalidad group by L_2.idLocalidad) as sq
+INNER JOIN (select L_2.idLocalidad, count(P_2.idPersona) * 100.0 / sum(count(P_2.idPersona)) over() as TotalLocalidad from personas as P_2 left join localidad as L_2 on P_2.idLocalidad = L_2.idLocalidad group by L_2.idLocalidad) as sq
 ON L.idLocalidad = sq.idLocalidad
 INNER JOIN (
-    SELECT Prov_2.idProvincia, count(distinct Loc_2.idPersona) * 100.0 / sum(count(Loc_2.idPersona)) over() as TotalProvincia 
+    SELECT Prov_2.idProvincia, count(Loc_2.idPersona) * 100.0 / sum(count(Loc_2.idPersona)) over() as TotalProvincia 
     FROM personas as Loc_2 
     LEFT JOIN localidad as s
     ON Loc_2.idLocalidad = s.idLocalidad
@@ -22,7 +22,7 @@ INNER JOIN (
     GROUP BY Prov_2.idProvincia) as sqProv
 ON pr.idProvincia = sqProv.idProvincia
 INNER JOIN (
-    SELECT paisQ.idPais, count(distinct personaPais.idPersona) * 100.0 / sum(count(personaPais.idPersona)) over() as TotalPais 
+    SELECT paisQ.idPais, count(personaPais.idPersona) * 100.0 / sum(count(personaPais.idPersona)) over() as TotalPais 
     FROM personas as personaPais 
     LEFT JOIN localidad as locPais
     ON personaPais.idLocalidad = locPais.idLocalidad
@@ -146,8 +146,7 @@ ORDER BY pa.pais, pr.provincia, L.localidad]]>
 					<dataset resetType="Report"/>
 					<keyExpression><![CDATA[$F{provincia}]]></keyExpression>
 					<valueExpression><![CDATA[$F{totalProvincia}]]></valueExpression>
-					<labelExpression><![CDATA[new DecimalFormat("#,##0.00").format($F{totalProvincia})+ " %"
-]]></labelExpression>
+					<labelExpression><![CDATA[new DecimalFormat("#,##0.00").format($F{totalProvincia})+ " %"]]></labelExpression>
 				</pieDataset>
 				<piePlot>
 					<plot/>
@@ -186,8 +185,7 @@ ORDER BY pa.pais, pr.provincia, L.localidad]]>
 					<dataset resetType="Report"/>
 					<keyExpression><![CDATA[$F{pais}]]></keyExpression>
 					<valueExpression><![CDATA[$F{totalPais}]]></valueExpression>
-					<labelExpression><![CDATA[new DecimalFormat("#,##0.00").format($F{totalPais})+ " %"
-]]></labelExpression>
+					<labelExpression><![CDATA[new DecimalFormat("#,##0.00").format($F{totalPais})+ " %"]]></labelExpression>
 				</pieDataset>
 				<piePlot>
 					<plot/>
@@ -205,8 +203,7 @@ ORDER BY pa.pais, pr.provincia, L.localidad]]>
 					<dataset resetType="Report"/>
 					<keyExpression><![CDATA[$F{localidad}]]></keyExpression>
 					<valueExpression><![CDATA[$F{totalLocalidad}]]></valueExpression>
-					<labelExpression><![CDATA[new DecimalFormat("#,##0.00").format($F{totalLocalidad})+ " %"
-]]></labelExpression>
+					<labelExpression><![CDATA[new DecimalFormat("#,##0.00").format($F{totalLocalidad})+ " %"]]></labelExpression>
 				</pieDataset>
 				<piePlot>
 					<plot/>

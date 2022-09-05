@@ -8,11 +8,16 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import javax.swing.JOptionPane;
+
 import modelo.Agenda;
+import persistencia.conexion.Conexion;
+import persistencia.dao.mysql.DAOSQLFactory;
 import presentacion.reportes.ReporteAgenda;
 import presentacion.vista.SelectorReporte;
 import presentacion.vista.VentanaPersona;
 import presentacion.vista.Vista;
+import presentacion.vista.VistaRegistro;
 import dto.LocalidadDTO;
 import dto.PaisDTO;
 import dto.PersonaDTO;
@@ -24,6 +29,7 @@ import dto.UbicacionDTO;
 public class Controlador implements ActionListener
 {
 		private Vista vista;
+		private VistaRegistro vistaRegistro;
 		private List<PersonaDTO> personasEnTabla;
 		private HashMap<String, TipoContactoDTO> tipoDeContactoByName;
 		private HashMap<String, PreferenciaContactoDTO> preferenciaContactoByName;
@@ -35,20 +41,55 @@ public class Controlador implements ActionListener
 		private VentanaPersona ventanaPersonaEditar;
 		private SelectorReporte selectorReporte;
 		private Agenda agenda;
+		private Conexion conexion;
 		
-		public Controlador(Vista vista, Agenda agenda)
+		public Controlador()
 		{
-			this.vista = vista;
+			
+		}
+		
+		public void inicializar()
+		{
+			this.vistaRegistro = new VistaRegistro();
+			this.vistaRegistro.getBtnIniciar().addActionListener(x->validarUsuario(x));
+		}
+		
+		private void validarUsuario(ActionEvent x) {
+			String user = this.vistaRegistro.getUser();
+			String pass = this.vistaRegistro.getPassword();
+			
+			if (Conexion.successConnection(user, pass)) {
+				this.conexion = Conexion.getConexion();
+				conexion.setUser(user);
+				conexion.setPassword(pass);
+				
+				this.vistaRegistro.ocultarVista();
+				iniciarAgenda();
+			} else {
+				this.vistaRegistro.showError();
+				this.vistaRegistro.limpiarCampos();
+			}
+		}
+		
+		private void iniciarAgenda () {
+			
+			this.vista = new Vista();
+			this.agenda = new Agenda(new DAOSQLFactory(), this.conexion);
+			
 			this.vista.getBtnAgregar().addActionListener(a->ventanaAgregarPersona(a));
 			this.vista.getBtnEditar().addActionListener(b->ventanaEditarPersona(b));
 			this.vista.getBtnBorrar().addActionListener(s->borrarPersona(s));
 			this.vista.getBtnReporte().addActionListener(j->ventanaSelectorReporte(j));
-			this.agenda = agenda;
+			
 			this.ventanaPersona = VentanaPersona.getInstance(this.agenda.obtenerTipoContacto(), this.agenda.obtenerPreferenciaContacto(), this.agenda.obtenerUbicaciones());		
 			this.ventanaPersona.getBtnAgregarPersona().addActionListener(p->guardarPersona(p));
+			
 			this.selectorReporte = SelectorReporte.getInstance();
 			this.selectorReporte.getBtnReportePreferenciaContacto().addActionListener(r->mostrarReportePreferenciaContacto(r));
 			this.selectorReporte.getBtnReporteUbicacion().addActionListener(k->mostrarReporteUbicacion(k));
+			
+			this.refrescarTabla();
+			this.vista.show();
 		}
 		
 		private void ventanaAgregarPersona(ActionEvent a) {
@@ -111,7 +152,7 @@ public class Controlador implements ActionListener
 			String nombre = this.ventanaPersonaEditar.getTxtNombre().getText();
 			String tel = ventanaPersonaEditar.getTxtTelefono().getText();
 			String tipoContacto = this.ventanaPersonaEditar.getContactTypeName();
-			String preferenciaContacto = this.ventanaPersona.getPrefereceContactName();
+			String preferenciaContacto = this.ventanaPersonaEditar.getPrefereceContactName();
 			String localidadPersona = this.ventanaPersonaEditar.getLocalidadName();
 			String callePersona = this.ventanaPersonaEditar.getCalle().getText();
 			String alturaCalle = this.ventanaPersonaEditar.getAltura().getText();
@@ -123,6 +164,8 @@ public class Controlador implements ActionListener
 			PersonaDTO nuevaPersona = new PersonaDTO(0, nombre, tel);
 			nuevaPersona.setTipoContactoId(tipoDeContactoByName.get(tipoContacto).getIdTipoContacto());
 			nuevaPersona.setPreferenciaContactoId(preferenciaContactoByName.get(preferenciaContacto).getIdPreferenciaContacto());
+			System.out.println("PREFERENCIA NAME");
+			System.out.println(preferenciaContacto);
 			nuevaPersona.setLocalidad(localidadByName.get(localidadPersona).getLocalidad());
 			nuevaPersona.setIdLocalidad(localidadByName.get(localidadPersona).getIdLocalidad());
 			nuevaPersona.setCalle(callePersona);
@@ -141,13 +184,13 @@ public class Controlador implements ActionListener
 		}
 
 		private void mostrarReportePreferenciaContacto(ActionEvent r) {
-			ReporteAgenda reporte = new ReporteAgenda("ReporteAgenda.jasper");
+			ReporteAgenda reporte = new ReporteAgenda("ReporteAgenda.jasper", this.conexion);
 			reporte.mostrar();	
 			this.selectorReporte.ocultarVentana();
 		}
 		
 		private void mostrarReporteUbicacion(ActionEvent r) {
-			ReporteAgenda reporte = new ReporteAgenda("ReporteUbicacion.jasper");
+			ReporteAgenda reporte = new ReporteAgenda("ReporteUbicacion.jasper", this.conexion);
 			reporte.mostrar();	
 			this.selectorReporte.ocultarVentana();
 		}
@@ -161,12 +204,6 @@ public class Controlador implements ActionListener
 			}
 			
 			this.refrescarTabla();
-		}
-		
-		public void inicializar()
-		{
-			this.refrescarTabla();
-			this.vista.show();
 		}
 		
 		private void refrescarTabla()

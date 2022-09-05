@@ -77,6 +77,8 @@ public class PersonaDAOSQL implements PersonaDAO
 			statement.setInt(9, persona.getTipoContactoId());
 			statement.setString(10, persona.getIdLocalidad());
 			statement.setInt(11, persona.getPreferenciaContactoId());
+			System.out.println(persona.getPreferenciaContactoId());
+			System.out.println("persona.getPreferenciaContactoId()");
 			statement.setInt(12, persona.getIdPersona());
 			
 			if(statement.executeUpdate() > 0)

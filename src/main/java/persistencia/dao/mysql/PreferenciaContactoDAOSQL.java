@@ -35,6 +35,7 @@ public class PreferenciaContactoDAOSQL implements PreferenciaContactoDAO{
 		{
 			e.printStackTrace();
 		}
+		
 		return preferenciasContactoByName;
 	}
 	

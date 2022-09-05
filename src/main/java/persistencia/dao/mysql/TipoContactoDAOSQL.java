@@ -12,12 +12,12 @@ import dto.TipoContactoDTO;
 public class TipoContactoDAOSQL implements TipoContactoDAO{
 	private static final String readall = "SELECT * FROM TIPO_CONTACTO";
 
-	public HashMap<String, TipoContactoDTO> readAll() 
+	public HashMap<String, TipoContactoDTO> readAll(Conexion conexionByAgenda) 
 	{
 		PreparedStatement statement;
 		ResultSet resultSet;
 		HashMap<String, TipoContactoDTO> tiposContactoByName = new HashMap<String, TipoContactoDTO>();
-		Conexion conexion = Conexion.getConexion();
+		Conexion conexion = conexionByAgenda;
 		try 
 		{
 			statement = conexion.getSQLConexion().prepareStatement(readall);
