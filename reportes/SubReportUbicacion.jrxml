@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.19.1.final using JasperReports Library version 6.19.1-867c00bf88cd4d784d404379d6c05e1b419e8a4c  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Blank_A4" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="1032ba84-57cd-4d5a-8a64-61816174d2e4">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="DB"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<queryString>
+		<![CDATA[SELECT localidad, count(*) FROM Localidad GROUP BY localidad]]>
+	</queryString>
+	<field name="localidad" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="localidad"/>
+		<property name="com.jaspersoft.studio.field.label" value="localidad"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="localidad"/>
+	</field>
+	<field name="count(*)" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="count(*)"/>
+		<property name="com.jaspersoft.studio.field.label" value="count(*)"/>
+	</field>
+	<background>
+		<band height="215" splitType="Stretch">
+			<pieChart>
+				<chart evaluationTime="Report">
+					<reportElement x="177" y="10" width="200" height="200" uuid="da012d0c-56b1-4325-845e-c620991b71cf"/>
+					<chartTitle/>
+					<chartSubtitle/>
+					<chartLegend/>
+				</chart>
+				<pieDataset>
+					<dataset resetType="Report"/>
+					<keyExpression><![CDATA[$F{localidad}]]></keyExpression>
+					<valueExpression><![CDATA[$F{count(*)}]]></valueExpression>
+					<labelExpression><![CDATA[$F{count(*)}+" "]]></labelExpression>
+				</pieDataset>
+				<piePlot>
+					<plot/>
+					<itemLabel/>
+				</piePlot>
+			</pieChart>
+		</band>
+	</background>
+</jasperReport>

@@ -1,9 +1,100 @@
 CREATE DATABASE `agenda`;
 USE agenda;
-CREATE TABLE `personas`
-(
-  `idPersona` int(11) NOT NULL AUTO_INCREMENT,
-  `Nombre` varchar(45) NOT NULL,
-  `Telefono` varchar(20) NOT NULL,
-  PRIMARY KEY (`idPersona`)
+CREATE TABLE PAIS (
+    idPais varchar(11) PRIMARY KEY,
+    pais varchar(20) NOT NULL
 );
+
+CREATE TABLE PROVINCIA (
+    idProvincia varchar(11) primary key,
+    idPais varchar(11) NOT NULL,
+    provincia varchar(20) NOT NULL,
+    FOREIGN KEY (idPais) REFERENCES PAIS(idPais)
+);
+
+CREATE TABLE LOCALIDAD (
+    idLocalidad varchar(11) primary key,
+    idProvincia varchar(11) NOT NULL,
+    localidad varchar(20) NOT NULL,
+    FOREIGN KEY (idProvincia) REFERENCES PROVINCIA(idProvincia)
+);
+
+CREATE TABLE TIPO_CONTACTO
+(
+  idTipoContacto int(11) NOT NULL AUTO_INCREMENT,
+  Tipo varchar(32) NOT NULL,
+  PRIMARY KEY (`idTipoContacto`)
+);
+
+CREATE TABLE PREFERENCIA_CONTACTO
+(
+  idPreferenciaContacto int(11) NOT NULL AUTO_INCREMENT,
+  preferenciaContacto varchar(32) NOT NULL,
+  PRIMARY KEY (`idPreferenciaContacto`)
+);
+
+CREATE TABLE PERSONAS
+(
+  idPersona int(11) NOT NULL AUTO_INCREMENT,
+  Nombre varchar(255) NOT NULL,
+  Telefono varchar(20) NOT NULL,
+  Calle varchar(20),
+  altura varchar(20),
+  piso varchar(20),
+  dpto varchar(20),
+  email varchar(255),
+  cumpleanios date,
+  idTipoContacto int(11),
+  idPreferenciaContacto int(11),
+  idLocalidad varchar(11),
+  PRIMARY KEY (idPersona),
+  FOREIGN KEY (IdTipoContacto) REFERENCES TIPO_CONTACTO(idTipoContacto),
+  FOREIGN KEY (idPreferenciaContacto) REFERENCES PREFERENCIA_CONTACTO(idPreferenciaContacto),
+  FOREIGN KEY (idLocalidad) REFERENCES LOCALIDAD(idLocalidad)
+);
+
+INSERT INTO TIPO_CONTACTO (Tipo) VALUES ('Familia');
+INSERT INTO TIPO_CONTACTO (Tipo) VALUES ('Trabajo');
+INSERT INTO TIPO_CONTACTO (Tipo) VALUES ('Amigo');
+INSERT INTO TIPO_CONTACTO (Tipo) VALUES ('Otro');
+
+INSERT INTO PREFERENCIA_CONTACTO (preferenciaContacto) VALUES ('Llamada');
+INSERT INTO PREFERENCIA_CONTACTO (preferenciaContacto) VALUES ('WhatsApp');
+INSERT INTO PREFERENCIA_CONTACTO (preferenciaContacto) VALUES ('SMS');
+INSERT INTO PREFERENCIA_CONTACTO (preferenciaContacto) VALUES ('Email');
+INSERT INTO PREFERENCIA_CONTACTO (preferenciaContacto) VALUES ('Red social');
+INSERT INTO PREFERENCIA_CONTACTO (preferenciaContacto) VALUES ('Otros');
+
+INSERT INTO PAIS (idPais, pais) VALUES ('ARG', 'Argentina');
+
+INSERT INTO PROVINCIA (idPais, idProvincia, provincia) VALUES ('ARG', 'BA', 'Buenos Aires');
+INSERT INTO PROVINCIA (idPais, idProvincia, provincia) VALUES ('ARG', 'SAL', 'Salta');
+INSERT INTO PROVINCIA (idPais, idProvincia, provincia) VALUES ('ARG', 'TUC', 'Tucuman');
+INSERT INTO PROVINCIA (idPais, idProvincia, provincia) VALUES ('ARG', 'COR', 'Cordoba');
+INSERT INTO PROVINCIA (idPais, idProvincia, provincia) VALUES ('ARG', 'MEN', 'Mendoza');
+
+INSERT INTO LOCALIDAD (idProvincia, idLocalidad, localidad) VALUES ('BA', 'CABA', 'CABA');
+INSERT INTO LOCALIDAD (idProvincia, idLocalidad, localidad) VALUES ('BA', 'LP', 'Los Polvorines');
+INSERT INTO LOCALIDAD (idProvincia, idLocalidad, localidad) VALUES ('BA', 'SMI', 'San Miguel');
+INSERT INTO LOCALIDAD (idProvincia, idLocalidad, localidad) VALUES ('BA', 'JCP', 'Jose C Paz');
+INSERT INTO LOCALIDAD (idProvincia, idLocalidad, localidad) VALUES ('BA', 'BV', 'Bella Viste');
+INSERT INTO LOCALIDAD (idProvincia, idLocalidad, localidad) VALUES ('BA', 'LMA', 'La Matanza');
+INSERT INTO LOCALIDAD (idProvincia, idLocalidad, localidad) VALUES ('SAL', 'SALTA', 'Salta');
+INSERT INTO LOCALIDAD (idProvincia, idLocalidad, localidad) VALUES ('SAL', 'ORA', 'Oran');
+INSERT INTO LOCALIDAD (idProvincia, idLocalidad, localidad) VALUES ('SAL', 'LAV', 'La Vina');
+INSERT INTO LOCALIDAD (idProvincia, idLocalidad, localidad) VALUES ('SAL', 'CER', 'Cerrillos');
+INSERT INTO LOCALIDAD (idProvincia, idLocalidad, localidad) VALUES ('SAL', 'CAL', 'Cafayate');
+INSERT INTO LOCALIDAD (idProvincia, idLocalidad, localidad) VALUES ('TUC', 'SMT', 'San Miguel');
+INSERT INTO LOCALIDAD (idProvincia, idLocalidad, localidad) VALUES ('TUC', 'YB', 'Yerba Buena');
+INSERT INTO LOCALIDAD (idProvincia, idLocalidad, localidad) VALUES ('TUC', 'TDV', 'Tafi del Valle');
+INSERT INTO LOCALIDAD (idProvincia, idLocalidad, localidad) VALUES ('TUC', 'FAM', 'Famailla');
+INSERT INTO LOCALIDAD (idProvincia, idLocalidad, localidad) VALUES ('MEN', 'SR', 'San Rafael');
+INSERT INTO LOCALIDAD (idProvincia, idLocalidad, localidad) VALUES ('MEN', 'MEN', 'Mendoza');
+INSERT INTO LOCALIDAD (idProvincia, idLocalidad, localidad) VALUES ('MEN', 'MAI', 'Maipu');
+INSERT INTO LOCALIDAD (idProvincia, idLocalidad, localidad) VALUES ('MEN', 'RIV', 'Rivadavia');
+INSERT INTO LOCALIDAD (idProvincia, idLocalidad, localidad) VALUES ('MEN', 'LHE', 'Las Heras');
+INSERT INTO LOCALIDAD (idProvincia, idLocalidad, localidad) VALUES ('COR', 'MC', 'Mina Clavero');
+INSERT INTO LOCALIDAD (idProvincia, idLocalidad, localidad) VALUES ('COR', 'CARL_PAZ', 'Villa Carlos Paz');
+INSERT INTO LOCALIDAD (idProvincia, idLocalidad, localidad) VALUES ('COR', 'L_CARL', 'La Carlota');
+INSERT INTO LOCALIDAD (idProvincia, idLocalidad, localidad) VALUES ('COR', 'COS', 'Cosquin');
+INSERT INTO LOCALIDAD (idProvincia, idLocalidad, localidad) VALUES ('COR', 'V_DOL', 'Villa Dolores');

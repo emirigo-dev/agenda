@@ -11,9 +11,8 @@ public class Main
 
 	public static void main(String[] args) 
 	{
-		Vista vista = new Vista();
-		Agenda modelo = new Agenda(new DAOSQLFactory());
-		Controlador controlador = new Controlador(vista, modelo);
+		
+		Controlador controlador = new Controlador();
 		controlador.inicializar();
 	}
 }
